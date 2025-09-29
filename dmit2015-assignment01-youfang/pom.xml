@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-shaded</artifactId>
-            <version>5.1.0.Final</version>
+            <version>6.0.3.Final</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
@@ -94,6 +94,18 @@
             <groupId>net.datafaker</groupId>
             <artifactId>datafaker</artifactId>
             <version>2.4.4</version>
+        </dependency>
+        <!-- Microprofile Config (Smallrye) implementation for Apache Tomcat 11 -->
+        <dependency>
+            <groupId>io.smallrye.config</groupId>
+            <artifactId>smallrye-config</artifactId>
+            <version>3.13.4</version>
+        </dependency>
+        <!-- Jakarta JSON Binding (Yasson) implementation for Apache Tomcat 11 -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>3.0.4</version>
         </dependency>
     </dependencies>
 

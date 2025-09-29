@@ -28,7 +28,8 @@ import java.util.UUID;
 public class BikeCrudView implements Serializable {
 
     @Inject
-    @Named("memoryBikeService")
+    //@Named("memoryBikeService")
+    @Named("firebaseHttpClientBikeService")
     private BikeService bikeService;
 
     /**

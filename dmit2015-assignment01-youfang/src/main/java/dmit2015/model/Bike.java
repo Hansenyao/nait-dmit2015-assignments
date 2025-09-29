@@ -1,5 +1,6 @@
 package dmit2015.model;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import net.datafaker.Faker;
 
@@ -34,7 +35,7 @@ public class Bike {
     @NotBlank(message = "Manufacture City is required.")
     private String manufactureCity;
 
-    @NotBlank(message = "Manufacture Date is required.")
+    @NotNull(message = "Manufacture Date is required.")
     private LocalDate manufactureDate;
 
     // Bike brands
