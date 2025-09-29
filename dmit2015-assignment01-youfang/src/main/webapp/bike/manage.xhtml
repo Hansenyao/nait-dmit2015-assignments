@@ -77,6 +77,9 @@
                     <p:column headerText="Manufacturer City">
                         <h:outputText value="#{currentItem.manufactureCity}"/>
                     </p:column>
+                    <p:column headerText="Manufacturer Date">
+                        <h:outputText value="#{currentItem.manufactureDate}"/>
+                    </p:column>
 
                     <p:column exportable="false" ariaHeaderText="Actions">
                         <p:commandButton icon="pi pi-pencil"
@@ -113,7 +116,6 @@
 
                     <p:outputPanel id="manage-Bike-content" class="ui-fluid">
                         <p:outputPanel rendered="#{not empty currentBikeCrudView.selectedBike}">
-                            <!-- TODO: Add input field for each editable property of the entity -->
                             <div class="field">
                                 <p:outputLabel for="@next">Brand</p:outputLabel>
                                 <p:selectOneMenu
@@ -121,7 +123,6 @@
                                         value="#{currentBikeCrudView.selectedBike.brand}">
                                     <f:selectItems value="#{currentBikeCrudView.getBrands()}" />
                                 </p:selectOneMenu>
-
                             </div>
                             <div class="field">
                                 <p:outputLabel for="@next">Size</p:outputLabel>
@@ -151,7 +152,15 @@
                                         value="#{currentBikeCrudView.selectedBike.manufactureCity}">
                                 </p:inputText>
                             </div>
-
+                            <div class="field">
+                                <p:outputLabel for="@next">Manufacture Date</p:outputLabel>
+                                <p:datePicker
+                                        id="manufactureDate"
+                                        value="#{currentBikeCrudView.selectedBike.manufactureDate}"
+                                        pattern="yyyy-MM-dd"
+                                        showIcon="true">
+                                </p:datePicker>
+                            </div>
                         </p:outputPanel>
                     </p:outputPanel>
 
