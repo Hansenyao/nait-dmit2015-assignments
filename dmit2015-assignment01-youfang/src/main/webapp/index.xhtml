@@ -8,7 +8,7 @@
         xmlns:o="http://omnifaces.org/ui">
 
     <!-- Page metadata for title, description, and keywords -->
-    <ui:param name="title" value="index - My JSF Application"/>
+    <ui:param name="title" value="DMIT2015 - Assignment1"/>
     <ui:param name="description" value="Description for index page"/>
     <ui:param name="keywords" value="jakarta, jsf, primefaces, index"/>
 
@@ -30,10 +30,23 @@
     <!-- Define main content for the page -->
     <ui:define name="maincontent">
         <div class="card">
-            <h1 role="heading" aria-level="1">DMIT2015 Faces Demo | Home</h1>
+            <h1 role="heading" aria-level="1">DMIT2015 Assignment1 | Home</h1>
             <h:form id="index_form" role="form">
-                <p:panel header="Welcome to DMIT2015 Faces Demo | Home">
-                    <!-- Add page-specific content here, e.g., PrimeFaces components -->
+                <p:panel header="Welcome to DMIT2015 Assignment1 | Home">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <!-- Photo -->
+                        <h:graphicImage value="resources/img/avatar.jpg"
+                                        alt="My Photo"
+                                        style="width:150px; height:150px; border-radius:50%;" />
+
+                        <!-- Personal Info -->
+                        <h:panelGrid columns="1">
+                            <h:outputText value="Name: Youfang Yao" />
+                            <h:outputText value="Student ID: 200582794" />
+                            <h:outputText value="Program: DMIT Software Development" />
+                            <h:outputText value="Email: yyao8@nait.ca" />
+                        </h:panelGrid>
+                    </h:panelGrid>
                 </p:panel>
             </h:form>
         </div>
