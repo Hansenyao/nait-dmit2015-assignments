@@ -15,6 +15,7 @@ import org.primefaces.PrimeFaces;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,6 +71,12 @@ public class BikeCrudView implements Serializable {
         }
     }
 
+    /**
+     * Return Bike brands list
+     * */
+    public List<String> getBrands() {
+        return Arrays.asList(Bike.BRANDS);
+    }
     /**
      * Event handler for the New button on the Faces crud page.
      * Create a new selected Bike instance to enter data for.

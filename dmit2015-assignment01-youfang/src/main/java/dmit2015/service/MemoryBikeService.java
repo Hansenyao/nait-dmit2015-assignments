@@ -8,7 +8,6 @@ import net.datafaker.Faker;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.random.RandomGenerator;
 
 @Named("memoryBikeService")
 @ApplicationScoped
@@ -18,18 +17,9 @@ public class MemoryBikeService implements BikeService {
 
     @PostConstruct
     public void init() {
-        String[] brands = {"Trek", "Giant", "Specialized", "Cannondale", "Scott"};
-
         var faker = new Faker();
-        var randomGenerator = RandomGenerator.getDefault();
         for (int counter = 1; counter <= 5; counter++) {
-            var currentBike = new Bike();
-            currentBike.setId(UUID.randomUUID().toString());
-            currentBike.setColor(faker.color().name());
-            currentBike.setBrand(faker.options().option(brands));
-            currentBike.setModel(faker.bothify("Model-??##"));
-            currentBike.setSize(faker.number().numberBetween(20, 29) + " inch");
-            currentBike.setManufactureCity(faker.address().city());
+            var currentBike = Bike.of(faker);
             bikes.add(currentBike);
         }
     }

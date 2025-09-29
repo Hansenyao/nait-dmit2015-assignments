@@ -1,0 +1,202 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="primefaces"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Bike - CRUD"/>
+
+    <ui:param name="internalstyles"
+              value=".Bikes-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
+
+    <ui:define name="maincontent">
+
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true">
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton id="newButton"
+                                         value="New"
+                                         icon="pi pi-plus"
+                                         actionListener="#{currentBikeCrudView.onOpenNew}"
+                                         update=":dialogs:manage-Bike-content"
+                                         oncomplete="PF('manageBikeDialog').show()"
+                                         styleClass="ui-button-success"
+                                         style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:manage-Bike-content"/>
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="dt-Bikes" widgetVar="dtBikes"
+                             value="#{currentBikeCrudView.bikes}"
+                             var="currentItem"
+                             reflow="true"
+                             selection="#{currentBikeCrudView.selectedBike}"
+                             rowKey="#{currentItem.id}"
+                             paginator="true" rows="10"
+                             paginatorPosition="bottom">
+
+                    <f:facet name="header">
+                        <div class="Bikes-table-header">
+                            <span style="font-weight: bold">Bikes</span>
+                            <span class="filter-container ui-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtBikes').filter()" placeholder="Search"/>
+                            </span>
+                        </div>
+                    </f:facet>
+
+                    <!-- TODO: add p:column for each property of the entity to display -->
+                    <p:column headerText="Brand">
+                        <h:outputText value="#{currentItem.brand}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{currentItem.size}"/>
+                    </p:column>
+                    <p:column headerText="Model">
+                        <h:outputText value="#{currentItem.model}"/>
+                    </p:column>
+                    <p:column headerText="Color">
+                        <h:outputText value="#{currentItem.color}"/>
+                    </p:column>
+                    <p:column headerText="Manufacturer City">
+                        <h:outputText value="#{currentItem.manufactureCity}"/>
+                    </p:column>
+
+                    <p:column exportable="false" ariaHeaderText="Actions">
+                        <p:commandButton icon="pi pi-pencil"
+                                         update=":dialogs:manage-Bike-content"
+                                         oncomplete="PF('manageBikeDialog').show()"
+                                         styleClass="edit-button rounded-button ui-button-success"
+                                         process="@this">
+                            <f:setPropertyActionListener value="#{currentItem}"
+                                                         target="#{currentBikeCrudView.selectedBike}"/>
+                            <f:setPropertyActionListener value="#{currentItem.id}"
+                                                         target="#{currentBikeCrudView.selectedId}"/>
+                            <p:resetInput target=":dialogs:manage-Bike-content"/>
+                        </p:commandButton>
+                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                         process="@this"
+                                         oncomplete="PF('deleteBikeDialog').show()">
+                            <f:setPropertyActionListener value="#{currentItem}"
+                                                         target="#{currentBikeCrudView.selectedBike}"/>
+                            <f:setPropertyActionListener value="#{currentItem.id}"
+                                                         target="#{currentBikeCrudView.selectedId}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+            <h:form id="dialogs">
+                <p:dialog header="Bike Details" showEffect="fade" modal="true" widgetVar="manageBikeDialog"
+                          responsive="true">
+
+                    <p:messages id="messages">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <p:outputPanel id="manage-Bike-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty currentBikeCrudView.selectedBike}">
+                            <!-- TODO: Add input field for each editable property of the entity -->
+                            <div class="field">
+                                <p:outputLabel for="@next">Brand</p:outputLabel>
+                                <p:selectOneMenu
+                                        id="brand"
+                                        value="#{currentBikeCrudView.selectedBike.brand}">
+                                    <f:selectItems value="#{currentBikeCrudView.getBrands()}" />
+                                </p:selectOneMenu>
+
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Size</p:outputLabel>
+                                <p:inputText
+                                        id="size"
+                                        value="#{currentBikeCrudView.selectedBike.size}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Model</p:outputLabel>
+                                <p:inputText
+                                        id="model"
+                                        value="#{currentBikeCrudView.selectedBike.model}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Color</p:outputLabel>
+                                <p:inputText
+                                        id="color"
+                                        value="#{currentBikeCrudView.selectedBike.color}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Manufacture City</p:outputLabel>
+                                <p:inputText
+                                        id="manufactureCity"
+                                        value="#{currentBikeCrudView.selectedBike.manufactureCity}">
+                                </p:inputText>
+                            </div>
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="saveButton"
+                                         value="Save"
+                                         icon="pi pi-check"
+                                         actionListener="#{currentBikeCrudView.onSave}"
+                                         update="manage-Bike-content"
+                                         process="manage-Bike-content @this"/>
+
+                        <p:commandButton id="generateDataButton"
+                                         value="Generate Data"
+                                         icon="pi pi-calculator"
+                                         actionListener="#{currentBikeCrudView.onGenerateData}"
+                                         update="manage-Bike-content"
+                                         process="@this"/>
+
+                        <p:commandButton id="cancelButton"
+                                         value="Cancel"
+                                         icon="pi pi-times"
+                                         onclick="PF('manageBikeDialog').hide()"
+                                         class="ui-button-secondary"
+                                         type="button"/>
+                    </f:facet>
+                </p:dialog>
+
+                <p:confirmDialog widgetVar="deleteBikeDialog" showEffect="fade" width="300"
+                                 message="Delete the Bike?" header="Confirm" severity="warn">
+                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{currentBikeCrudView.onDelete}"
+                                     process="@this"
+                                     oncomplete="PF('deleteBikeDialog').hide()"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                     onclick="PF('deleteBikeDialog').hide()"/>
+                </p:confirmDialog>
+
+                <p:confirmDialog global="true" showEffect="fade" width="300">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                     icon="pi pi-times"/>
+                </p:confirmDialog>
+            </h:form>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>

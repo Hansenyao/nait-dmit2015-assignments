@@ -3,11 +3,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import net.datafaker.Faker;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
-import java.util.random.RandomGenerator;
 
 @Getter
 @Setter
@@ -35,6 +32,10 @@ public class Bike {
     @NotBlank(message = "CreateDate is required.")
     private Date CreateDate;
 
+    // Bike brands
+    public static final String[] BRANDS =
+            {"rek", "Giant", "Specialized", "Cannondale", "Scott"};
+
     public Bike(Bike other) {
         this.id = other.id;
         this.Color = other.Color;
@@ -51,11 +52,9 @@ public class Bike {
 
     public static Bike of(Faker faker) {
         var newBike = new Bike();
-        String[] brands = {"Trek", "Giant", "Specialized", "Cannondale", "Scott"};
-
         newBike.setId(UUID.randomUUID().toString());
         newBike.setColor(faker.color().name());
-        newBike.setBrand(faker.options().option(brands));
+        newBike.setBrand(faker.options().option(BRANDS));
         newBike.setModel(faker.bothify("Model-??##"));
         newBike.setSize(faker.number().numberBetween(20, 29) + " inch");
         newBike.setManufactureCity(faker.address().city());
