@@ -1,0 +1,26 @@
+#-H 'Content-Type: application/json'
+#--data-binary '{"email":"[user@example.com]","password":"[PASSWORD]","returnSecureToken":true}'
+@API_KEY = AIzaSyAAsaVCqyLsChpgHMWCLSDw8Rsd0AjKkRs
+# sign-in success case
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{API_KEY}}
+Content-Type: application/json
+
+{
+  "email": "yyfsingler@163.com",
+  "password": "123456",
+  "returnSecureToken": true
+}
+###
+
+# sign-in failed case
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{API_KEY}}
+Content-Type: application/json
+
+{
+  "email": "yyfsingler@163.com",
+  "password": "1234561",
+  "returnSecureToken": true
+}
+
+###
+
