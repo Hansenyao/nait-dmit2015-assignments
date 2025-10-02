@@ -6,7 +6,7 @@ POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={
 Content-Type: application/json
 
 {
-  "email": "yyfsingler@163.com",
+  "email": "youfang.yao@gmail.com",
   "password": "123456",
   "returnSecureToken": true
 }
@@ -17,8 +17,8 @@ POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={
 Content-Type: application/json
 
 {
-  "email": "yyfsingler@163.com",
-  "password": "1234561",
+  "email": "others@gmail.com",
+  "password": "654321",
   "returnSecureToken": true
 }
 

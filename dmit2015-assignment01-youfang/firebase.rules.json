@@ -1,0 +1,36 @@
+{
+  "rules": {
+    "Task": {
+      ".read": true,
+      ".write": true
+    },
+    "WeatherForecast": {
+      ".read": true,
+      ".write": true
+    },
+    "Bike": {
+      ".read": true,
+      ".write": true
+    },
+    "multi_tenant_data": {
+      "Task": {
+        "$uid": {
+          ".read": "auth !== null && auth.uid === $uid",
+          ".write": "auth !== null && auth.uid === $uid"
+        }
+      },
+      "WeatherForecast": {
+        "$uid": {
+          ".read": "auth !== null && auth.uid === $uid",
+          ".write": "auth !== null && auth.uid === $uid"
+        }
+      },
+      "Bike": {
+        "$uid": {
+          ".read": "auth !== null && auth.uid === $uid",
+          ".write": "auth !== null && auth.uid === $uid"
+        }
+      }
+    }
+  }
+}
