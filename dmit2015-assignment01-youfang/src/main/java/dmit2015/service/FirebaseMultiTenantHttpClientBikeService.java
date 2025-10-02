@@ -51,7 +51,7 @@ public class FirebaseMultiTenantHttpClientBikeService implements BikeService {
      *
      */
     @Inject
-    @ConfigProperty(name = "firebase.rtdb.Bike.base.url")
+    @ConfigProperty(name = "firebase.rtdb.bike.base.url")
     private String firebaseRtdbBaseUrl;
 
     /**
@@ -209,11 +209,12 @@ public class FirebaseMultiTenantHttpClientBikeService implements BikeService {
                             .map(item -> {
                                 var currentBike = new Bike();
                                 currentBike.setId(item.getKey());
-                                // TODO: Set each property of the Java data object
-                                // currentBike.setProperty1(item.getValue().getProperty1());
-                                // currentBike.setProperty2(item.getValue().getProperty2());
-                                // currentBike.setProperty3(item.getValue().getProperty3());
-
+                                currentBike.setColor(item.getValue().getColor());
+                                currentBike.setBrand(item.getValue().getBrand());
+                                currentBike.setModel(item.getValue().getModel());
+                                currentBike.setSize(item.getValue().getSize());
+                                currentBike.setManufactureCity(item.getValue().getManufactureCity());
+                                currentBike.setManufactureDate(item.getValue().getManufactureDate());
                                 return currentBike;
                             })
                             .toList();
