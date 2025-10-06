@@ -14,7 +14,7 @@ public class FacesLogout {
 
     public void submit() throws ServletException {
         Faces.invalidateSession();
-        Faces.redirect(Faces.getRequestContextPath() + "/firebaseAuthSignIn.xhtml?faces-redirect=true");
+        Faces.redirect(Faces.getRequestContextPath() + "/account/login.xhtml?faces-redirect=true");
     }
 
 }

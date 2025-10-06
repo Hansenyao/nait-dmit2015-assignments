@@ -40,9 +40,9 @@
                         <p:menubar role="navigation">
                             <p:menuitem value="Home" icon="pi pi-home" outcome="/index"/>
                             <p:menuitem value="Bike" icon="pi pi-th-large" outcome="/bike/manage"/>
-                            <p:menuitem value="Sign Up" icon="pi pi-user-plus" action="/firebaseAuthSignUp" />
+                            <p:menuitem value="Sign Up" icon="pi pi-user-plus" action="/account/register" />
                             <c:if test="${empty firebaseAuthSignInSession.username}">
-                                <p:menuitem value="Login" icon="pi pi-users" action="/firebaseAuthSignIn" />
+                                <p:menuitem value="Login" icon="pi pi-users" action="/account/login" />
                             </c:if>
                             <c:if test="${not empty firebaseAuthSignInSession.username}">
                                 <p:menuitem value="Logout #{firebaseAuthSignInSession.username}" icon="pi pi-users" action="#{facesLogout.submit}" />
