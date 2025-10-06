@@ -1,0 +1,55 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:faces="jakarta.faces"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:pt="jakarta.faces.passthrough"
+        xmlns:cc="jakarta.faces.composite"
+        xmlns:c="jakarta.tags.core"
+        xmlns:fn="jakarta.tags.functions"
+        xmlns:o="http://omnifaces.org/ui"
+        xmlns:of="http://omnifaces.org/functions"
+        xmlns:p="primefaces"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value="Firebase Sign Up"/>
+
+    <ui:define name="maincontent">
+        <h1>Sign Up</h1>
+
+        <h:form name="signUpForm">
+            <p:focus context="panel"/>
+
+            <h2 class="form-signin-heading">Please sign up</h2>
+
+            <h:panelGrid id="panel" columns="3" cellpadding="7">
+
+                <p:outputLabel for="username" value="Username" />
+                <p:inputText id="username"
+                             placeholder="username"
+                             required="true"
+                             value="#{firebaseAuthSignUp.username}">
+                </p:inputText>
+                <p:message for="username" />
+
+                <p:outputLabel for="password" value="password" />
+                <p:password id="password"
+                            placeholder="Password"
+                            required="true"
+                            value="#{firebaseAuthSignUp.password}">
+                </p:password>
+                <p:message for="password" />
+            </h:panelGrid>
+
+            <p:commandButton value="Sign Up"
+                             action="#{firebaseAuthSignUp.submit()}"
+                             icon="pi pi-plus"
+                             ajax="false"/>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
