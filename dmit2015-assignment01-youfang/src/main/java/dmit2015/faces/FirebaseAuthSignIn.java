@@ -8,11 +8,13 @@ import jakarta.inject.Named;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Messages;
+
 
 import java.io.Serializable;
 
@@ -38,6 +40,10 @@ public class FirebaseAuthSignIn implements Serializable {
     private String username;
 
     @NotBlank(message = "Password value is required.")
+    @Pattern(
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{12,}$",
+        message = "Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, and one digit."
+    )
     @Getter
     @Setter
     private String password;
