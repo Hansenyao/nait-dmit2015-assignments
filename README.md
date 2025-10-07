@@ -41,6 +41,6 @@ firebase.web.api.key=AIzaSyAAsaVCqyLsChpgHMWCLSDw8Rsd0AjKkRs
 
   - multi_tenant_data: The root folder for multi-tenant application
 
-  - <Entity>: Data model name, for example "Bike"
+  - < Entity >: Data model name, for example "Bike"
 
   - {uid}: User ID string, for example "8cUswbq74hhMD6bZ7AyvTv3zxK02"
