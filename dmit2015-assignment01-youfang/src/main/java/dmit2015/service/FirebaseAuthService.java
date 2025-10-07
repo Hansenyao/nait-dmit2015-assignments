@@ -3,9 +3,11 @@ package dmit2015.service;
 import dmit2015.model.FirebaseAuthSignInResponsePayload;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -26,6 +28,10 @@ import java.nio.charset.StandardCharsets;
 public class FirebaseAuthService implements Serializable {
     private HttpClient httpClient;
 
+    @Inject
+    @ConfigProperty(name = "firebase.auth.baseUrl")
+    private String firebaseAuthBaseUrl;
+
     @PostConstruct
     private void init() {
         httpClient = HttpClient.newHttpClient();
@@ -44,7 +50,7 @@ public class FirebaseAuthService implements Serializable {
 
             // Convert the currentCoffeeBean to a JSON string using JSONB
             String requestBodyJson = jsonb.toJson(payload);
-            final String apiEndPoint = String.format("%s?key=%s", "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword", apiKey);
+            final String apiEndPoint = String.format("%s%s?key=%s", firebaseAuthBaseUrl, "/accounts:signInWithPassword", apiKey);
             // Create a Http Request for sending a Http POST request to push new data
             var httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(apiEndPoint))
@@ -101,7 +107,7 @@ public class FirebaseAuthService implements Serializable {
 
             // Convert the currentCoffeeBean to a JSON string using JSONB
             String requestBodyJson = jsonb.toJson(payload);
-            final String apiEndPoint = String.format("%s?key=%s", "https://identitytoolkit.googleapis.com/v1/accounts:signUp", apiKey);
+            final String apiEndPoint = String.format("%s%s?key=%s", firebaseAuthBaseUrl, "/accounts:signUp", apiKey);
             // Create a Http Request for sending a Http POST request to push new data
             var httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(apiEndPoint))
