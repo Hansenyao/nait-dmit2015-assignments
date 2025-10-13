@@ -88,4 +88,11 @@ public class JakartaPersistenceBikeService implements BikeService {
             throw new RuntimeException("Could not find Bike with id: " + id);
         }
     }
+
+    // Find bikes by brand
+    public List<Bike> findByBrand(String brand) {
+        return entityManager.createQuery("SELECT b FROM Bike b WHERE b.brand = :brand", Bike.class)
+                .setParameter("brand", brand)
+                .getResultList();
+    }
 }

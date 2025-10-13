@@ -23,39 +23,38 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
-Verify your Apache Maven includes the following dependencies: 
-
-<dependency>
-  <groupId>org.seleniumhq.selenium</groupId>
-  <artifactId>selenium-java</artifactId>
-  <version>4.35.0</version>
-  <scope>test</scope>
-</dependency>
-<dependency>
-  <groupId>io.github.bonigarcia</groupId>
-  <artifactId>webdrivermanager</artifactId>
-  <version>6.3.1</version>
-  <scope>test</scope>
-</dependency>
-<dependency>
-  <groupId>io.github.bonigarcia</groupId>
-  <artifactId>selenium-jupiter</artifactId>
-  <version>6.3.0</version>
-  <scope>test</scope>
-</dependency>
-
-<dependency>
-  <groupId>org.assertj</groupId>
-  <artifactId>assertj-core</artifactId>
-  <version>3.27.6</version>
-  <scope>test</scope>
-</dependency>
-
+ * Verify your Apache Maven includes the following dependencies:
+ *
+ * <dependency>
+ * <groupId>org.seleniumhq.selenium</groupId>
+ * <artifactId>selenium-java</artifactId>
+ * <version>4.35.0</version>
+ * <scope>test</scope>
+ * </dependency>
+ * <dependency>
+ * <groupId>io.github.bonigarcia</groupId>
+ * <artifactId>webdrivermanager</artifactId>
+ * <version>6.3.1</version>
+ * <scope>test</scope>
+ * </dependency>
+ * <dependency>
+ * <groupId>io.github.bonigarcia</groupId>
+ * <artifactId>selenium-jupiter</artifactId>
+ * <version>6.3.0</version>
+ * <scope>test</scope>
+ * </dependency>
+ *
+ * <dependency>
+ * <groupId>org.assertj</groupId>
+ * <artifactId>assertj-core</artifactId>
+ * <version>3.27.6</version>
+ * <scope>test</scope>
+ * </dependency>
  */
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BikeCrudPageSeleniumIT  {
+public class BikeCrudPageSeleniumIT {
 
     private static WebDriver driver;
 
@@ -75,21 +74,21 @@ public class BikeCrudPageSeleniumIT  {
 //        System.setProperty("webdriver.chrome.driver", "/home/user2015/.cache/selenium/chromedriver/linux64/137.0.7151.70/chromedriver");
 //        System.setProperty("webdriver.gecko.driver", "/snap/bin/geckodriver");
 
-//         WebDriverManager
-//             .chromedriver()
-//             .setup();
-//
-//         var chromeOptions = new ChromeOptions();
-//         chromeOptions.addArguments("--remote-allow-origins=*");
-////         chromeOptions.addArguments("--headless=new");              // Chrome 109+ modern headless
-//         chromeOptions.addArguments("--window-size=1366,900");      // important for consistent layout
-//         driver = new ChromeDriver(chromeOptions);
+         WebDriverManager
+             .chromedriver()
+             .setup();
 
-        WebDriverManager.firefoxdriver().setup();
-        FirefoxOptions ffOptions = new FirefoxOptions();
-//        ffOptions.addArguments("-headless");
-        ffOptions.addArguments("--width=1366", "--height=900");
-        driver = new FirefoxDriver(ffOptions);
+         var chromeOptions = new ChromeOptions();
+         chromeOptions.addArguments("--remote-allow-origins=*");
+         //chromeOptions.addArguments("--headless=new");              // Chrome 109+ modern headless
+         chromeOptions.addArguments("--window-size=1366,900");      // important for consistent layout
+         driver = new ChromeDriver(chromeOptions);
+
+//        WebDriverManager.firefoxdriver().setup();
+//        FirefoxOptions ffOptions = new FirefoxOptions();
+////        ffOptions.addArguments("-headless");
+//        ffOptions.addArguments("--width=1366", "--height=900");
+//        driver = new FirefoxDriver(ffOptions);
 
         js = (JavascriptExecutor) driver;
     }
@@ -98,12 +97,13 @@ public class BikeCrudPageSeleniumIT  {
     static void afterAllTests() {
         driver.quit();
     }
+
     @BeforeEach
     void beforeEachTestMethod() {
 
     }
 
-     @AfterEach
+    @AfterEach
     void afterEachTestMethod() throws InterruptedException {
 //        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         Thread.sleep(1000);
@@ -115,7 +115,7 @@ public class BikeCrudPageSeleniumIT  {
         element.sendKeys(fieldValue);
     }
 
-   private void setPrimeFacesDatePickerValue(String fieldId, String fieldValue) {
+    private void setPrimeFacesDatePickerValue(String fieldId, String fieldValue) {
         // The text field for the p:datePicker component has a suffix of "_input" appended to the end of the field id.
         final String datePickerTextFieldId = String.format("%s_input", fieldId);
         WebElement element = driver.findElement(By.id(datePickerTextFieldId));
@@ -199,19 +199,22 @@ public class BikeCrudPageSeleniumIT  {
 
         return null;
     }
-   
+
     @Order(1)
     @ParameterizedTest
     // TODO Change the test data below
     @CsvSource(value = {
-            "field1Id, field1Value, field2Id, field2Value, field3Id, field3Value,",
-            "field1Id, field1Value, field2Id, field2Value, field3Id, field3Value,",
-            "field1Id, field1Value, field2Id, field2Value, field3Id, field3Value,",
+            "brand, Trek, size, 24inch, model, Model-AB12, color, red, manufactureCity, Edmonton, manufactureDate, 2025-09-09",
+            "brand, Giant, size, 26inch, model, Model-AT26, color, white, manufactureCity, Kunshan, manufactureDate, 2024-02-19",
+            "brand, Scott, size, 27inch, model, Model-ST27, color, black, manufactureCity, Vancouver, manufactureDate, 2023-11-28",
     })
     void shouldCreate(
-        String field1Id, String field1Value, 
-        String field2Id, String field2Value, 
-        String field3Id, String field3Value
+            String field1Id, String field1Value,
+            String field2Id, String field2Value,
+            String field3Id, String field3Value,
+            String field4Id, String field4Value,
+            String field5Id, String field5Value,
+            String field6Id, String field6Value
     ) throws InterruptedException {
 
         driver.get("http://localhost:8080/bike/manage.xhtml");
@@ -221,19 +224,19 @@ public class BikeCrudPageSeleniumIT  {
 
         assertThat(driver.getTitle())
                 .isEqualToIgnoringCase("Bike - CRUD");
- 
+
         // Find the New button by id then click on it
         var newButtonElement = driver.findElement(By.id("form:newButton"));
         assertThat(newButtonElement).isNotNull();
         newButtonElement.click();
 
         // Set the value for each form field.
-        // Add suffix `_input` for p:inputNumber
-        setTextValue("dialogs:" + field1Id, field1Value);
-        // setPrimeFacesSelectOneMenuValue(field2Id, field2Value);
-        // setPrimeFacesDatePickerValue(field1Id, field1Value);
+        setPrimeFacesSelectOneMenuValue("dialogs:" + field1Id, field1Value);
         setTextValue("dialogs:" + field2Id, field2Value);
         setTextValue("dialogs:" + field3Id, field3Value);
+        setTextValue("dialogs:" + field4Id, field4Value);
+        setTextValue("dialogs:" + field5Id, field5Value);
+        setPrimeFacesDatePickerValue("dialogs:" + field6Id, field6Value);
 
         Thread.sleep(1000);
 
@@ -252,7 +255,7 @@ public class BikeCrudPageSeleniumIT  {
         // The primary key of the entity is at the end of the feedback message after the last space character.
         final int indexOfPrimaryKeyValue = feedbackMessage.lastIndexOf(" ") + 1;
         // Extract the primary key and remove any comma separating numbers greater 999
-        String idValue = feedbackMessage.substring(indexOfPrimaryKeyValue).replaceAll(",","");
+        String idValue = feedbackMessage.substring(indexOfPrimaryKeyValue).replaceAll(",", "");
         // Add the primary key to the list for usage in other test methods
         sharedEditIds.add(idValue);
 
@@ -264,15 +267,14 @@ public class BikeCrudPageSeleniumIT  {
 
     @Order(2)
     @ParameterizedTest
-    // TODO Change the test data below
     @CsvSource({
-        "0, Column1Value, Column2Value, Column3Value",
-        "1, Column1Value, Column2Value, Column3Value",
-        "2, Column1Value, Column2Value, Column3Value",
+            "0, Trek, 24inch, Model-AB12, red, Edmonton, 2025-09-09",
+            "1, Giant, 26inch, Model-AT26, white, Kunshan, 2024-02-19",
+            "2, Scott, 27inch, Model-ST27, black, Vancouver, 2023-11-28",
     })
     void shouldList(
-        int idIndex, 
-        String expectedColumn1Value, String expectedColumn2Value, String expectedColumn3Value
+            int idIndex,
+            String expectedColumn1Value, String expectedColumn2Value, String expectedColumn3Value, String expectedColumn4Value, String expectedColumn5Value, String expectedColumn6Value
     ) throws InterruptedException {
         String expectedIdValue = sharedEditIds.get(idIndex);
         // Open a browser and navigate to the index page
@@ -291,6 +293,9 @@ public class BikeCrudPageSeleniumIT  {
         final String column1Value = rowColumns.get(0).getText();
         final String column2Value = rowColumns.get(1).getText();
         final String column3Value = rowColumns.get(2).getText();
+        final String column4Value = rowColumns.get(3).getText();
+        final String column5Value = rowColumns.get(4).getText();
+        final String column6Value = rowColumns.get(5).getText();
 
         assertThat(column1Value)
                 .isEqualToIgnoringCase(expectedColumn1Value);
@@ -298,6 +303,12 @@ public class BikeCrudPageSeleniumIT  {
                 .isEqualToIgnoringCase(expectedColumn2Value);
         assertThat(column3Value)
                 .isEqualToIgnoringCase(expectedColumn3Value);
+        assertThat(column4Value)
+                .isEqualToIgnoringCase(expectedColumn4Value);
+        assertThat(column5Value)
+                .isEqualToIgnoringCase(expectedColumn5Value);
+        assertThat(column6Value)
+                .isEqualToIgnoringCase(expectedColumn6Value);
 
         // Take screenshot of page and save source code
         // snapshot(driver, "found-row" + expectedIdValue);        
@@ -317,7 +328,7 @@ public class BikeCrudPageSeleniumIT  {
                 .isEqualToIgnoringCase("Bike - CRUD");
 
         // Find and delete all the rows added from the shouldCreate() method
-        for(String idValue : sharedEditIds) {
+        for (String idValue : sharedEditIds) {
 
             WebElement rowElement = findRowIndex(idValue);
             assertThat(rowElement).isNotNull();
@@ -354,7 +365,7 @@ public class BikeCrudPageSeleniumIT  {
 
     void snapshot(WebDriver d, String name) throws IOException {
         // Save screenshot of page as a png file to the target folder
-        byte[] png = ((TakesScreenshot)d).getScreenshotAs(OutputType.BYTES);
+        byte[] png = ((TakesScreenshot) d).getScreenshotAs(OutputType.BYTES);
         Files.write(Path.of("target", name + ".png"), png);
 
         // Save page source code as an html file to the target folder
