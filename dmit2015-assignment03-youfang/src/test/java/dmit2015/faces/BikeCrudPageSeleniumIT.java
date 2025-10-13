@@ -174,7 +174,7 @@ public class BikeCrudPageSeleniumIT {
             // find the table element
             var tableElement = driver.findElement(By.id(primeFacesDataTableId));
             // Get all the rows from the table
-            var tableRows = tableElement.findElements(By.tagName("tr"));
+            var tableRows = tableElement.findElements(By.cssSelector("tr.ui-widget-content"));
             // Track which row index the idValue is located
             int currentRowIndex = 0;
             // Check each row in the dataTable
@@ -229,6 +229,11 @@ public class BikeCrudPageSeleniumIT {
         var newButtonElement = driver.findElement(By.id("form:newButton"));
         assertThat(newButtonElement).isNotNull();
         newButtonElement.click();
+
+        // Make sure dialog is open
+        var waitDlg = new WebDriverWait(driver, Duration.ofSeconds(5));
+        waitDlg.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogs:" + field1Id + "_label")));
+        waitDlg.until(ExpectedConditions.visibilityOfElementLocated(By.id("dialogs:" + field6Id + "_input")));
 
         // Set the value for each form field.
         setPrimeFacesSelectOneMenuValue("dialogs:" + field1Id, field1Value);
