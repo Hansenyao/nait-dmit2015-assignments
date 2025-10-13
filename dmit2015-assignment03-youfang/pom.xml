@@ -18,12 +18,12 @@
     </properties>
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.1.0</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -111,11 +111,12 @@
             <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet-shaded</artifactId>
-            <version>6.0.3.Final</version>
-        </dependency>
+        <!--Comment this dependency as it will cause wildfly:dev failed-->
+<!--        <dependency>-->
+<!--            <groupId>org.jboss.weld.servlet</groupId>-->
+<!--            <artifactId>weld-servlet-shaded</artifactId>-->
+<!--            <version>6.0.3.Final</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
