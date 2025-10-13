@@ -31,6 +31,7 @@ public class BikeCrudView implements Serializable {
     //@Named("memoryBikeService")
     //@Named("firebaseHttpClientBikeService")
     //@Named("firebaseMultiTenantHttpClientBikeService")
+    @Named("jakartaPersistenceBikeService")
     private BikeService bikeService;
 
     /**
