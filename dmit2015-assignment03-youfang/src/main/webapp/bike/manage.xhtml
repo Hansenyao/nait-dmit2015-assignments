@@ -40,6 +40,20 @@
                             <p:resetInput target=":dialogs:manage-Bike-content"/>
                         </p:commandButton>
                     </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:inputText id="searchText" value="#{searchText}"
+                                     placeholder="Enter brand..."
+                                     style="width:200px; margin-right: .5rem;"/>
+                        <p:commandButton id="searchButton"
+                                         value="Search"
+                                         icon="pi pi-search-plus"
+                                         actionListener="#{currentBikeCrudView.onSearch(searchText)}"
+                                         update=":dialogs:manage-Bike-content"
+                                         styleClass="ui-button-info"
+                                         style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:manage-Bike-content"/>
+                        </p:commandButton>
+                    </p:toolbarGroup>
                 </p:toolbar>
 
                 <p:dataTable id="dt-Bikes" widgetVar="dtBikes"

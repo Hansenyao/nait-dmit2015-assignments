@@ -89,9 +89,18 @@ public class JakartaPersistenceBikeService implements BikeService {
         }
     }
 
+    @Override
+    @Transactional
     // Find bikes by brand
     public List<Bike> findByBrand(String brand) {
-        return entityManager.createQuery("SELECT b FROM Bike b WHERE b.brand = :brand", Bike.class)
+        // Return all bikes if brand is null or empty
+        brand = brand != null ? brand.trim() : "";
+        String jpql = """
+            SELECT b FROM Bike b
+            WHERE (:brand IS NULL OR :brand = '' OR LOWER(b.brand) LIKE LOWER(CONCAT('%', :brand, '%')))
+            ORDER BY b.id
+            """;
+        return entityManager.createQuery(jpql, Bike.class)
                 .setParameter("brand", brand)
                 .getResultList();
     }

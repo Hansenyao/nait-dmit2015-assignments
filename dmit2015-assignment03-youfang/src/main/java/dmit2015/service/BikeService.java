@@ -16,4 +16,6 @@ public interface BikeService {
     Bike updateBike(Bike bike);
 
     void deleteBikeById(String id);
+
+    List<Bike> findByBrand(String brand);
 }

@@ -162,6 +162,21 @@ public class BikeCrudView implements Serializable {
     }
 
     /**
+     * Event handler for Search by brand
+     */
+    public void onSearch(String search) {
+        try {
+            bikes = bikeService.findByBrand(search);
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
+        } catch (RuntimeException ex) { // handle application generated exceptions
+            Messages.addGlobalError(ex.getMessage());
+        } catch (Exception ex) {    // handle system generated exceptions
+            Messages.addGlobalError("Search not successful.");
+            handleException(ex);
+        }
+    }
+
+    /**
      * This method is used to handle exceptions and display root cause to user.
      *
      * @param ex The Exception to handle.
