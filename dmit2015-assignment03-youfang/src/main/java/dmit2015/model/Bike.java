@@ -2,6 +2,7 @@ package dmit2015.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.*;
 import net.datafaker.Faker;
 
@@ -44,6 +45,7 @@ public class Bike {
     private String manufactureCity;
 
     @NotNull(message = "Manufacture Date is required.")
+    @Past(message = "Manufacture Date must be in the past.")
     private LocalDate manufactureDate;
 
     private LocalDateTime createTime;
