@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.UUID;
 import java.util.random.RandomGenerator;
 
 @Named("jakartaPersistenceBikeService")
@@ -28,6 +29,7 @@ public class JakartaPersistenceBikeService implements BikeService {
         // 1) Generate a new primary key value
         // 2) Set the primary key value for the new entity
 
+        bike.setId(UUID.randomUUID().toString());
         entityManager.persist(bike);
         return bike;
     }
@@ -63,9 +65,12 @@ public class JakartaPersistenceBikeService implements BikeService {
         } else {
             var existingBike = optionalBike.orElseThrow();
             // Update only properties that is editable by the end user
-            // TODO: Copy each edit property from bike to existingBike
-            // existingBike.setPropertyName(bike.getPropertyName());
-
+            existingBike.setBrand(bike.getBrand());
+            existingBike.setSize(bike.getSize());
+            existingBike.setColor(bike.getColor());
+            existingBike.setModel(bike.getModel());
+            existingBike.setManufactureCity(bike.getManufactureCity());
+            existingBike.setManufactureDate(bike.getManufactureDate());
             bike = entityManager.merge(existingBike);
         }
         return bike;
@@ -83,5 +88,4 @@ public class JakartaPersistenceBikeService implements BikeService {
             throw new RuntimeException("Could not find Bike with id: " + id);
         }
     }
-
 }
