@@ -1,4 +1,5 @@
 package dmit2015.model;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -11,13 +12,20 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
+/*
+* @author: Youfang Yao
+* @version: 2025-10-12
+* s
+* */
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Bike {
+    @Id
+    @Column(name="bakeid", unique = true, nullable = false)
     private String id;
 
     @NotBlank(message = "Color is required.")
@@ -37,6 +45,9 @@ public class Bike {
 
     @NotNull(message = "Manufacture Date is required.")
     private LocalDate manufactureDate;
+
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 
     // Bike brands
     public static final String[] BRANDS =
@@ -67,5 +78,16 @@ public class Bike {
         newBike.setManufactureCity(faker.address().city());
         newBike.setManufactureDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate());
         return newBike;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updateTime = LocalDateTime.now();
     }
 }
