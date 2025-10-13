@@ -321,6 +321,43 @@ public class BikeCrudPageSeleniumIT {
     }
 
     @Order(3)
+    @ParameterizedTest
+    @CsvSource({
+            "Trek",
+            "Giant",
+            "Scott",
+    })
+    void shouldExist(String searchText) throws InterruptedException {
+        // Open a browser and navigate to the target page
+        driver.get("http://localhost:8080/bike/manage.xhtml");
+        // Maximize the browser window so we can see the data being inputted
+        driver.manage().window().maximize();
+        Thread.sleep(1000);
+
+        assertThat(driver.getTitle())
+                .isEqualToIgnoringCase("Bike - CRUD");
+
+        // Find the Search Text Input by id then click on it
+        setTextValue("form:searchText", searchText);
+
+        // Find the Search button
+        var searchButtonElement = driver.findElement(By.id("form:searchButton"));
+        assertThat(searchButtonElement).isNotNull();
+        searchButtonElement.click();
+
+        // Wait for table is refreshed
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(primeFacesDataTableId)));
+
+        // Get the data table element and the rows count
+        var tableElement = driver.findElement(By.id(primeFacesDataTableId));
+        var tableRows = tableElement.findElements(By.cssSelector("tr.ui-widget-content"));
+
+        // Should be > 0
+        assertThat(tableRows).isNotEmpty();
+    }
+
+    @Order(4)
     @Test
     void shouldDelete() throws InterruptedException {
         // Open a browser and navigate to the target page
