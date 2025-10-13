@@ -1,5 +1,6 @@
 package dmit2015.tools;
 
+import dmit2015.model.Bike;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -64,7 +65,6 @@ import net.datafaker.Faker;
  * @author Sam Wu
  */
 public class JakartaPersistenceDataGenerator {
-
     public static void main(String[] args) {
         try {
             Class.forName("org.hibernate.jpa.HibernatePersistenceProvider");
@@ -86,14 +86,11 @@ public class JakartaPersistenceDataGenerator {
 
     public static void generateData(EntityManager em) {
         var faker = new Faker();
-        /* TODO: Write your own code to implement data generation logic.
-        You are responsible for:
-            - Determining the number of records to generate.
-            - Creating the fake data for each record.
-            - Creating new instances of your JPA entity classes.
-            - Setting the properties of the entity instances using the generated fake data.
-            - Persisting the entity instances to the database by calling the persist() method of the EntityManager.
-        */
 
+        // Create 10 seed Bikes data in database
+        for (int i = 0; i < 10; i++) {
+            Bike currentTask = Bike.of(faker);
+            em.persist(currentTask);
+        }
     }
 }
