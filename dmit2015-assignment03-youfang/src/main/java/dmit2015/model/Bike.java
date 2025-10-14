@@ -1,4 +1,5 @@
 package dmit2015.model;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,26 +7,38 @@ import jakarta.validation.constraints.Past;
 import lombok.*;
 import net.datafaker.Faker;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-/*
-* @author: Youfang Yao
-* @version: 2025-10-12
-* s
-* */
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.random.RandomGenerator;
+
+/**
+ * This Jakarta Persistence class is mapped to a relational database table with the same name.
+ * If Java class name does not match database table name, you can use @Table annotation to specify the table name.
+ * <p>
+ * Each field in this class is mapped to a column with the same name in the mapped database table.
+ * If the field name does not match database table column name, you can use the @Column annotation to specify the database table column name.
+ * The @Transient annotation can be used on field that is not mapped to a database table column.
+ */
 @Entity
+//@Table(schema = "CustomSchemaName", name="CustomTableName")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Bike {
+public class Bike implements Serializable {
+
+    private static final Logger logger = Logger.getLogger(Bike.class.getName());
+
     @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="bakeid", unique = true, nullable = false)
     private String id;
 
@@ -48,7 +61,12 @@ public class Bike {
     @Past(message = "Manufacture Date must be in the past.")
     private LocalDate manufactureDate;
 
+    @Version
+    private Integer version = 1;
+
+    @Column(nullable = false)
     private LocalDateTime createTime;
+
     private LocalDateTime updateTime;
 
     // Bike brands
@@ -56,6 +74,7 @@ public class Bike {
             {"Trek", "Giant", "Specialized", "Cannondale", "Scott"};
 
     public Bike(Bike other) {
+        this.version = other.version;
         this.id = other.id;
         this.color = other.color;
         this.brand = other.brand;
@@ -63,6 +82,8 @@ public class Bike {
         this.size = other.size;
         this.manufactureCity = other.manufactureCity;
         this.manufactureDate = other.manufactureDate;
+        this.createTime = other.createTime;
+        this.updateTime = other.updateTime;
     }
 
     public static Bike copyOf(Bike other) {
@@ -83,13 +104,23 @@ public class Bike {
     }
 
     @PrePersist
-    public void onCreate() {
+    private void beforePersist() {
         this.createTime = LocalDateTime.now();
         this.updateTime = LocalDateTime.now();
     }
 
     @PreUpdate
-    public void onUpdate() {
-        this.updateTime = LocalDateTime.now();
+    private void beforeUpdate() {
+        updateTime = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((obj instanceof Bike other) && Objects.equals(id, other.id));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

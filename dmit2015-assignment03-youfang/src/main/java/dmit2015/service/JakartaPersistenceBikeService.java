@@ -6,13 +6,11 @@ import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
 
 import java.util.UUID;
-import java.util.random.RandomGenerator;
 
 @Named("jakartaPersistenceBikeService")
 @ApplicationScoped
