@@ -202,7 +202,6 @@ public class BikeCrudPageSeleniumIT {
 
     @Order(1)
     @ParameterizedTest
-    // TODO Change the test data below
     @CsvSource(value = {
             "brand, Trek, size, 24inch, model, Model-AB12, color, red, manufactureCity, Edmonton, manufactureDate, 2025-09-09",
             "brand, Giant, size, 26inch, model, Model-AT26, color, white, manufactureCity, Kunshan, manufactureDate, 2024-02-19",

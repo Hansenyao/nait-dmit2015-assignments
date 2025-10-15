@@ -99,7 +99,7 @@ public class Bike implements Serializable {
         newBike.setModel(faker.bothify("Model-??##"));
         newBike.setSize(faker.number().numberBetween(20, 29) + " inch");
         newBike.setManufactureCity(faker.address().city());
-        newBike.setManufactureDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate());
+        newBike.setManufactureDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate().minusDays(1));
         return newBike;
     }
 

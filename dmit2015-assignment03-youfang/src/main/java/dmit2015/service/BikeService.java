@@ -18,4 +18,6 @@ public interface BikeService {
     void deleteBikeById(String id);
 
     List<Bike> findByBrand(String brand);
+
+    void deleteAllBikes();
 }

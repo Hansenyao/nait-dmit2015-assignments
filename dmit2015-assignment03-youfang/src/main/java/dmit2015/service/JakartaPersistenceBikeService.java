@@ -29,6 +29,7 @@ public class JakartaPersistenceBikeService implements BikeService {
 
         bike.setId(UUID.randomUUID().toString());
         entityManager.persist(bike);
+        entityManager.flush();  // Validate immediately
         return bike;
     }
 
@@ -70,6 +71,7 @@ public class JakartaPersistenceBikeService implements BikeService {
             existingBike.setManufactureCity(bike.getManufactureCity());
             existingBike.setManufactureDate(bike.getManufactureDate());
             bike = entityManager.merge(existingBike);
+            entityManager.flush();  // Validate immediately
         }
         return bike;
     }
@@ -101,5 +103,10 @@ public class JakartaPersistenceBikeService implements BikeService {
         return entityManager.createQuery(jpql, Bike.class)
                 .setParameter("brand", brand)
                 .getResultList();
+    }
+
+    @Override
+    public void deleteAllBikes() {
+        entityManager.createQuery("DELETE FROM Bike").executeUpdate();
     }
 }
