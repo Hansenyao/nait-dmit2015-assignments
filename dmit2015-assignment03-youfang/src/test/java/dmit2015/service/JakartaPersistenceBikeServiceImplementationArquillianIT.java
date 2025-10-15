@@ -227,7 +227,6 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
 
     @Order(6)
     @ParameterizedTest
-    // TODO Change the value below
     @CsvSource(value = {
             "'', 'red', 'Model-xy21', '21inch', 'Edmonton', '2025-01-01', 'Brand is required'",
             "Giant, 'black', 'Model-ab26', '26inch', 'Vancouver', '2027-01-01', 'Manufacture Date must be in the past'",
@@ -261,5 +260,27 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
             assertThat(ex)
                     .hasMessageContaining(expectedExceptionMessage);
         }
+    }
+
+    @Order(7)
+    @ParameterizedTest
+    @CsvSource(value = {
+            "Trek",
+            "Giant",
+    }, nullValues = {"null"})
+    void givenBrand_findEntityByBrand_thenReturnEntityList(
+            String brand
+    ) {
+
+        // Create new bike with the given brand
+        Bike newBike = Bike.of(faker);
+        newBike.setBrand(brand);
+        bikeService.createBike(newBike);
+
+        // Act
+        List<Bike> bikes = bikeService.findByBrand(brand);
+
+        // Assert
+        assertThat(bikes.size()).isGreaterThanOrEqualTo(1);
     }
 }
