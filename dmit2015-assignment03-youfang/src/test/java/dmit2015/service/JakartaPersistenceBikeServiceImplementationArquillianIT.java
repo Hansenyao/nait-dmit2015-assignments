@@ -254,11 +254,10 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     @Order(6)
     @ParameterizedTest
     @CsvSource(value = {
-            "'', 'red', 'Model-xy21', '21inch', 'Edmonton', '2025-01-01', 'Brand is required'",
-            "Giant, 'black', 'Model-ab26', '26inch', 'Vancouver', '2027-01-01', 'Manufacture Date must be in the past'",
+            "'red', 'Model-xy21', '21inch', '', '2025-01-01', 'Manufacture City is required'",
+            "'black', 'Model-ab26', '26inch', 'Vancouver', '2027-01-01', 'Manufacture Date must be in the past'",
     }, nullValues = {"null"})
     void givenEntityWithValidationErrors_whenAddEntity_thenThrowException(
-            String brand,
             String color,
             String model,
             String size,
@@ -268,7 +267,6 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     ) {
         List<Brand> allBrand = brandService.getAllBrands();
         int randomIndex = faker.number().numberBetween(0, allBrand.size());
-        Instant instant = faker.timeAndDate().past(100, TimeUnit.DAYS);
 
         // Arrange
         Bike newBike = new Bike();
@@ -297,18 +295,21 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
             "Giant",
     }, nullValues = {"null"})
     void givenBrand_findEntityByBrand_thenReturnEntityList(
-            String brand
+            String brandName
     ) {
         List<Brand> allBrand = brandService.getAllBrands();
-        int randomIndex = faker.number().numberBetween(0, allBrand.size());
+        Brand brand = allBrand.stream()
+                .filter(b -> b.getName().equals(brandName))
+                .findFirst()
+                .orElse(null);
 
         // Create new bike with the given brand
         Bike newBike = Bike.of(faker);
-        newBike.setBrand(allBrand.get(randomIndex));
+        newBike.setBrand(brand);
         bikeService.createBike(newBike);
 
         // Act
-        List<Bike> bikes = bikeService.findByBrandId(brand);
+        List<Bike> bikes = bikeService.findByBrandId(brand.getId());
 
         // Assert
         assertThat(bikes.size()).isGreaterThanOrEqualTo(1);
