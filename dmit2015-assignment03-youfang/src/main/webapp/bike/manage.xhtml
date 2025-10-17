@@ -87,8 +87,11 @@
                     <p:column headerText="Color">
                         <h:outputText value="#{currentItem.color}"/>
                     </p:column>
-                    <p:column headerText="Manufacturer City">
-                        <h:outputText value="#{currentItem.manufactureCity}"/>
+                    <p:column headerText="Manufacturer">
+                        <h:outputText value="#{currentItem.manufacturer.name}"/>
+                    </p:column>
+                    <p:column headerText="Manufacturer Country">
+                        <h:outputText value="#{currentItem.manufacturer.country}"/>
                     </p:column>
                     <p:column headerText="Manufacturer Date">
                         <h:outputText value="#{currentItem.manufactureDate}"/>

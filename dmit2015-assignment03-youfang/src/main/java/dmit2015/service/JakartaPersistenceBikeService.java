@@ -50,7 +50,7 @@ public class JakartaPersistenceBikeService implements BikeService {
 
     @Override
     public List<Bike> getAllBikes() {
-        return entityManager.createQuery("SELECT o FROM Bike o ", Bike.class)
+        return entityManager.createQuery("SELECT b FROM Bike b JOIN FETCH b.manufacturer", Bike.class)
                 .getResultList();
     }
 
@@ -97,7 +97,7 @@ public class JakartaPersistenceBikeService implements BikeService {
         // Return all bikes if brand is null or empty
         brand = brand != null ? brand.trim() : "";
         String jpql = """
-            SELECT b FROM Bike b
+            SELECT b FROM Bike b JOIN FETCH b.manufacturer
             WHERE (:brand IS NULL OR :brand = '' OR LOWER(b.brand) LIKE LOWER(CONCAT('%', :brand, '%')))
             ORDER BY b.id
             """;
