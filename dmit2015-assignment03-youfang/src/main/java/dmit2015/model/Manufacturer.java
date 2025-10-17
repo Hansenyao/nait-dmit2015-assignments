@@ -7,10 +7,7 @@ import net.datafaker.Faker;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.random.RandomGenerator;
@@ -45,6 +42,9 @@ public class Manufacturer implements Serializable {
     @NotBlank(message = "Manufacturer country is required.")
     private String Country;
 
+    @OneToMany(mappedBy = "manufacturer")
+    private List<Bike> bikes = new ArrayList<>();
+
     @Version
     private Integer version;
 
@@ -64,6 +64,7 @@ public class Manufacturer implements Serializable {
 
     // Constructor
     public Manufacturer(String  name, String country) {
+        this.setId(UUID.randomUUID().toString());
         this.setName(name);
         this.setCountry(country);
     }

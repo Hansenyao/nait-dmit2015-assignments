@@ -39,7 +39,7 @@ public class Bike implements Serializable {
 
     @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="bakeid", unique = true, nullable = false)
+    @Column(name="bikeid", unique = true, nullable = false)
     private String id;
 
     @NotBlank(message = "Color is required.")
@@ -67,7 +67,7 @@ public class Bike implements Serializable {
     private Manufacturer manufacturer;
 
     @Version
-    private Integer version = 1;
+    private Integer version;
 
     @Column(nullable = false)
     private LocalDateTime createTime;

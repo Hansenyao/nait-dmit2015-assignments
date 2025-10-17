@@ -1,6 +1,7 @@
 package dmit2015.service;
 
 import dmit2015.model.Bike;
+import dmit2015.model.Manufacturer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -106,7 +107,22 @@ public class JakartaPersistenceBikeService implements BikeService {
     }
 
     @Override
+    @Transactional
     public void deleteAllBikes() {
         entityManager.createQuery("DELETE FROM Bike").executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    public List<Bike> findByManufacturerId(Long manufacturerId) {
+        return entityManager.createQuery("SELECT b FROM Bike b WHERE b.manufacturer.id = :id", Bike.class)
+                .setParameter("id", manufacturerId)
+                .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public Manufacturer findManufacturerById(Long id) {
+        return entityManager.find(Manufacturer.class, id);
     }
 }

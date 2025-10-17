@@ -1,6 +1,7 @@
 package dmit2015.service;
 
 import dmit2015.model.Bike;
+import dmit2015.model.Manufacturer;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,8 @@ public interface BikeService {
     List<Bike> findByBrand(String brand);
 
     void deleteAllBikes();
+
+    List<Bike> findByManufacturerId(Long manufacturerId);
+
+    Manufacturer findManufacturerById(Long id);
 }
