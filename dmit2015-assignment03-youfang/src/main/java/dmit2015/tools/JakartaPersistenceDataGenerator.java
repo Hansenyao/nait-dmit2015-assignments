@@ -1,7 +1,7 @@
 package dmit2015.tools;
 
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
+import dmit2015.model.Brand;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -10,6 +10,7 @@ import net.datafaker.Faker;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * To generate and persist fake data to your database using this JakartaPersistenceDatabaseGenerator program:
@@ -90,20 +91,21 @@ public class JakartaPersistenceDataGenerator {
     }
 
     public static void generateData(EntityManager em) {
-        // Create manufacturers
-        List<Manufacturer> manufacturers = new ArrayList<>();
-        for (var item : Manufacturer.MANUFACTURERS) {
-            // item[0] = name, item[1] = countryCode
-            Manufacturer currentManufacturer = new Manufacturer(item[0], item[1]);
-            manufacturers.add(currentManufacturer);
-            em.persist(currentManufacturer);
+        // Create brands
+        ArrayList<Brand> allBrands = new ArrayList<>();
+        for (var item : Brand.BRANDS) {
+            Brand brand = new Brand(item);
+            allBrands.add(brand);
+            em.persist(brand);
         }
+
         // Create 10 seed Bikes data in database
         var faker = new Faker();
+        Random random = new Random();
         for (int i = 0; i < 10; i++) {
             Bike currentBike = Bike.of(faker);
-            int randomIndex = faker.number().numberBetween(0, manufacturers.size());
-            currentBike.setManufacturer(manufacturers.get(randomIndex));
+            int randomIndex = random.nextInt(allBrands.size());
+            currentBike.setBrand(allBrands.get(randomIndex));
             em.persist(currentBike);
         }
     }

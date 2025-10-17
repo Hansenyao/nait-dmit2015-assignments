@@ -1,7 +1,6 @@
 package dmit2015.faces;
 
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
 import dmit2015.service.BikeService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -53,9 +52,6 @@ public class BikeCrudView implements Serializable {
     @Getter
     private List<Bike> bikes;
 
-    @Inject
-    @Named("currentManufacturerCrudView")
-    private ManufacturerCrudView manufacturerCrudView;
     /**
      * Fetch all Bike from the data source.
      * <p>
@@ -103,10 +99,6 @@ public class BikeCrudView implements Serializable {
         try {
             var faker = new Faker();
             selectedBike = Bike.of(faker);
-            // Set a random manufacturer
-            List<Manufacturer> allManufacturers = manufacturerCrudView.getManufacturers();
-            Manufacturer randomManufacturer = allManufacturers.get(faker.random().nextInt(allManufacturers.size()));
-            selectedBike.setManufacturer(randomManufacturer);
         } catch (Exception e) {
             Messages.addGlobalError("Error generating data {0}", e.getMessage());
         }

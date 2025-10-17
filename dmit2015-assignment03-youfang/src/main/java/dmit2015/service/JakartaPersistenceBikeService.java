@@ -1,7 +1,6 @@
 package dmit2015.service;
 
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -73,7 +72,6 @@ public class JakartaPersistenceBikeService implements BikeService {
             existingBike.setModel(bike.getModel());
             existingBike.setManufactureCity(bike.getManufactureCity());
             existingBike.setManufactureDate(bike.getManufactureDate());
-            existingBike.setManufacturer(bike.getManufacturer());
             bike = entityManager.merge(existingBike);
             entityManager.flush();  // Validate immediately
         }

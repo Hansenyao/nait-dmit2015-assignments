@@ -27,20 +27,17 @@ import java.util.random.RandomGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Manufacturer implements Serializable {
+public class Brand implements Serializable {
 
-    private static final Logger logger = Logger.getLogger(Manufacturer.class.getName());
+    private static final Logger logger = Logger.getLogger(Brand.class.getName());
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "manufacturerid", nullable = false)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "branid", nullable = false)
     private String id;
 
-    @NotBlank(message = "Manufacturer name is required.")
+    @NotBlank(message = "Brand name is required.")
     private String name;
-
-    @NotBlank(message = "Manufacturer country is required.")
-    private String Country;
 
     @Version
     private Integer version;
@@ -50,26 +47,30 @@ public class Manufacturer implements Serializable {
 
     private LocalDateTime updateTime;
 
-    // Bike manufacturers
-    public static final String[][] MANUFACTURERS = {
-            {"Trek Bicycle Corporation", "US"},
-            {"Giant Manufacturing Co., Ltd.", "TW"},
-            {"Specialized Bicycle Components, Inc.", "US"},
-            {"Cannondale Bicycle Corporation", "US"},
-            {"Scott Sports SA", "CH"},
-    };
+    // Bike brands
+    public static final String[] BRANDS =
+            {"Trek", "Giant", "Specialized", "Cannondale", "Scott"};
 
-    // Constructor
-    public Manufacturer(String  name, String country) {
+    // Return a random brand name from BRANDS
+    public static String getRandomBrandName() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(BRANDS.length);
+        return  BRANDS[randomIndex];
+    }
+
+    // Constructor with name
+    public Brand(String brand) {
+        if (!Arrays.asList(BRANDS).contains(brand)) {
+            throw new IllegalArgumentException("Invalid rand name: " + brand);
+        }
         this.setId(UUID.randomUUID().toString());
-        this.setName(name);
-        this.setCountry(country);
+        this.setName(brand);
     }
 
     @PrePersist
     private void beforePersist() {
-        this.createTime = LocalDateTime.now();
-        this.updateTime = LocalDateTime.now();
+        createTime = LocalDateTime.now();
+        updateTime = LocalDateTime.now();
     }
 
     @PreUpdate
@@ -79,7 +80,7 @@ public class Manufacturer implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return ((obj instanceof Manufacturer other) && Objects.equals(id, other.id));
+        return ((obj instanceof Brand other) && Objects.equals(id, other.id));
     }
 
     @Override

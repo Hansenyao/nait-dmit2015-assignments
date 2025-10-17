@@ -1,7 +1,6 @@
 package dmit2015.service;
 
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
 
 import java.util.List;
 import java.util.Optional;
