@@ -76,7 +76,7 @@
                     </f:facet>
 
                     <p:column headerText="Brand">
-                        <h:outputText value="#{currentItem.brand}"/>
+                        <h:outputText value="#{currentItem.brand.name}"/>
                     </p:column>
                     <p:column headerText="Size">
                         <h:outputText value="#{currentItem.size}"/>
@@ -87,11 +87,8 @@
                     <p:column headerText="Color">
                         <h:outputText value="#{currentItem.color}"/>
                     </p:column>
-                    <p:column headerText="Manufacturer">
-                        <h:outputText value="#{currentItem.manufacturer.name}"/>
-                    </p:column>
-                    <p:column headerText="Manufacturer Country">
-                        <h:outputText value="#{currentItem.manufacturer.country}"/>
+                    <p:column headerText="Manufacturer City">
+                        <h:outputText value="#{currentItem.manufactureCity}"/>
                     </p:column>
                     <p:column headerText="Manufacturer Date">
                         <h:outputText value="#{currentItem.manufactureDate}"/>
@@ -136,8 +133,10 @@
                                 <p:outputLabel for="@next">Brand</p:outputLabel>
                                 <p:selectOneMenu
                                         id="brand"
-                                        value="#{currentBikeCrudView.selectedBike.brand}">
-                                    <f:selectItems value="#{currentBikeCrudView.getBrands()}" />
+                                        value="#{currentBikeCrudView.selectedBike.brand}"
+                                        converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItems value="#{currentBrandCrudView.getBrands()}"
+                                        var="b" itemValue="#{b}" itemLabel="#{b.name}"/>
                                 </p:selectOneMenu>
                             </div>
                             <div class="field">
@@ -161,22 +160,12 @@
                                         value="#{currentBikeCrudView.selectedBike.color}">
                                 </p:inputText>
                             </div>
-<!--                            <div class="field">-->
-<!--                                <p:outputLabel for="@next">Manufacture City</p:outputLabel>-->
-<!--                                <p:inputText-->
-<!--                                        id="manufactureCity"-->
-<!--                                        value="#{currentBikeCrudView.selectedBike.manufactureCity}">-->
-<!--                                </p:inputText>-->
-<!--                            </div>-->
                             <div class="field">
-                                <p:outputLabel for="@next">Manufacturer</p:outputLabel>
-                                <p:selectOneMenu
-                                        id="manufacturer"
-                                        value="#{currentBikeCrudView.selectedBike.manufacturer}"
-                                        converter="omnifaces.SelectItemsConverter">
-                                    <f:selectItems value="#{currentManufacturerCrudView.manufacturers}"
-                                        var="m" itemValue="#{m}" itemLabel="#{m.name}"/>
-                                </p:selectOneMenu>
+                                <p:outputLabel for="@next">Manufacture City</p:outputLabel>
+                                <p:inputText
+                                        id="manufactureCity"
+                                        value="#{currentBikeCrudView.selectedBike.manufactureCity}">
+                                </p:inputText>
                             </div>
                             <div class="field">
                                 <p:outputLabel for="@next">Manufacture Date</p:outputLabel>

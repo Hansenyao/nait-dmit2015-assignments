@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.UUID;
 import java.util.random.RandomGenerator;
 
 @Named("jakartaPersistenceBrandService")
@@ -18,7 +19,7 @@ import java.util.random.RandomGenerator;
 public class JakartaPersistenceBrandService implements BrandService {
 
     // Assign a unitName if there are more than one persistence unit defined in persistence.xml
-    @PersistenceContext //(unitName="pu-name-in-persistence.xml")
+    @PersistenceContext(unitName="postgresql-jpa-pu") //(unitName="pu-name-in-persistence.xml")
     private EntityManager entityManager;
 
     @Override
@@ -28,7 +29,9 @@ public class JakartaPersistenceBrandService implements BrandService {
         // 1) Generate a new primary key value
         // 2) Set the primary key value for the new entity
 
+        brand.setId(UUID.randomUUID().toString());
         entityManager.persist(brand);
+        entityManager.flush();  // Validate immediately
         return brand;
     }
 
@@ -63,8 +66,7 @@ public class JakartaPersistenceBrandService implements BrandService {
         } else {
             var existingBrand = optionalBrand.orElseThrow();
             // Update only properties that is editable by the end user
-            // TODO: Copy each edit property from brand to existingBrand
-            // existingBrand.setPropertyName(brand.getPropertyName());
+            existingBrand.setName(brand.getName());
 
             brand = entityManager.merge(existingBrand);
         }
@@ -83,5 +85,4 @@ public class JakartaPersistenceBrandService implements BrandService {
             throw new RuntimeException("Could not find Brand with id: " + id);
         }
     }
-
 }
