@@ -89,6 +89,7 @@ public class BikeCrudView implements Serializable {
      */
     public void onOpenNew() {
         selectedBike = new Bike();
+        selectedBike.setManufactureCity("Edmonton");
         selectedId = null;
     }
 

@@ -203,9 +203,9 @@ public class BikeCrudPageSeleniumIT {
     @Order(1)
     @ParameterizedTest
     @CsvSource(value = {
-            "brand, Trek, size, 24inch, model, Model-AB12, color, red, manufactureCity, Edmonton, manufactureDate, 2025-09-09",
-            "brand, Giant, size, 26inch, model, Model-AT26, color, white, manufactureCity, Kunshan, manufactureDate, 2024-02-19",
-            "brand, Scott, size, 27inch, model, Model-ST27, color, black, manufactureCity, Vancouver, manufactureDate, 2023-11-28",
+            "brand, Trek, size, 24inch, model, Model-AB12, color, red, manufacturer, 'Trek Bicycle Corporation', manufactureDate, 2025-09-09",
+            "brand, Giant, size, 26inch, model, Model-AT26, color, white, manufacturer, 'Scott Sports SA', manufactureDate, 2024-02-19",
+            "brand, Scott, size, 27inch, model, Model-ST27, color, black, manufacturer, 'Cannondale Bicycle Corporation', manufactureDate, 2023-11-28",
     })
     void shouldCreate(
             String field1Id, String field1Value,
@@ -239,7 +239,8 @@ public class BikeCrudPageSeleniumIT {
         setTextValue("dialogs:" + field2Id, field2Value);
         setTextValue("dialogs:" + field3Id, field3Value);
         setTextValue("dialogs:" + field4Id, field4Value);
-        setTextValue("dialogs:" + field5Id, field5Value);
+        //setTextValue("dialogs:" + field5Id, field5Value);
+        setPrimeFacesSelectOneMenuValue("dialogs:" + field5Id, field5Value);
         setPrimeFacesDatePickerValue("dialogs:" + field6Id, field6Value);
 
         Thread.sleep(1000);
@@ -272,9 +273,9 @@ public class BikeCrudPageSeleniumIT {
     @Order(2)
     @ParameterizedTest
     @CsvSource({
-            "0, Trek, 24inch, Model-AB12, red, Edmonton, 2025-09-09",
-            "1, Giant, 26inch, Model-AT26, white, Kunshan, 2024-02-19",
-            "2, Scott, 27inch, Model-ST27, black, Vancouver, 2023-11-28",
+            "0, Trek, 24inch, Model-AB12, red, 'Trek Bicycle Corporation', 2025-09-09",
+            "1, Giant, 26inch, Model-AT26, white, 'Scott Sports SA', 2024-02-19",
+            "2, Scott, 27inch, Model-ST27, black, 'Cannondale Bicycle Corporation', 2023-11-28",
     })
     void shouldList(
             int idIndex,
@@ -299,7 +300,8 @@ public class BikeCrudPageSeleniumIT {
         final String column3Value = rowColumns.get(2).getText();
         final String column4Value = rowColumns.get(3).getText();
         final String column5Value = rowColumns.get(4).getText();
-        final String column6Value = rowColumns.get(5).getText();
+        //final String column6Value = rowColumns.get(5).getText();  // Manufacturer Country
+        final String column7Value = rowColumns.get(6).getText();    // manufacturer Date
 
         assertThat(column1Value)
                 .isEqualToIgnoringCase(expectedColumn1Value);
@@ -311,7 +313,9 @@ public class BikeCrudPageSeleniumIT {
                 .isEqualToIgnoringCase(expectedColumn4Value);
         assertThat(column5Value)
                 .isEqualToIgnoringCase(expectedColumn5Value);
-        assertThat(column6Value)
+        //assertThat(column6Value)
+        //        .isEqualToIgnoringCase(expectedColumn6Value);
+        assertThat(column7Value)
                 .isEqualToIgnoringCase(expectedColumn6Value);
 
         // Take screenshot of page and save source code
