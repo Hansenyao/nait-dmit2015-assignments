@@ -22,7 +22,4 @@ public interface BikeService {
 
     void deleteAllBikes();
 
-    List<Bike> findByManufacturerId(Long manufacturerId);
-
-    Manufacturer findManufacturerById(Long id);
 }

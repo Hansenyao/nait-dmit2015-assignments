@@ -71,6 +71,7 @@ public class JakartaPersistenceBikeService implements BikeService {
             existingBike.setModel(bike.getModel());
             existingBike.setManufactureCity(bike.getManufactureCity());
             existingBike.setManufactureDate(bike.getManufactureDate());
+            existingBike.setManufacturer(bike.getManufacturer());
             bike = entityManager.merge(existingBike);
             entityManager.flush();  // Validate immediately
         }
@@ -110,19 +111,5 @@ public class JakartaPersistenceBikeService implements BikeService {
     @Transactional
     public void deleteAllBikes() {
         entityManager.createQuery("DELETE FROM Bike").executeUpdate();
-    }
-
-    @Override
-    @Transactional
-    public List<Bike> findByManufacturerId(Long manufacturerId) {
-        return entityManager.createQuery("SELECT b FROM Bike b WHERE b.manufacturer.id = :id", Bike.class)
-                .setParameter("id", manufacturerId)
-                .getResultList();
-    }
-
-    @Override
-    @Transactional
-    public Manufacturer findManufacturerById(Long id) {
-        return entityManager.find(Manufacturer.class, id);
     }
 }

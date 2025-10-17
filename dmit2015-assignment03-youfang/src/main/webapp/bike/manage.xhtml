@@ -172,7 +172,8 @@
                                 <p:outputLabel for="@next">Manufacturer</p:outputLabel>
                                 <p:selectOneMenu
                                         id="manufacturer"
-                                        value="#{currentBikeCrudView.selectedBike.manufacturer}">
+                                        value="#{currentBikeCrudView.selectedBike.manufacturer}"
+                                        converter="omnifaces.SelectItemsConverter">
                                     <f:selectItems value="#{currentManufacturerCrudView.manufacturers}"
                                         var="m" itemValue="#{m}" itemLabel="#{m.name}"/>
                                 </p:selectOneMenu>
