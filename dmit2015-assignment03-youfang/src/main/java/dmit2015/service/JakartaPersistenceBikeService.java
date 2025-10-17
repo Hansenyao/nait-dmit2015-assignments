@@ -95,7 +95,8 @@ public class JakartaPersistenceBikeService implements BikeService {
     @Transactional
     // Find bikes by brand Id
     public List<Bike> findByBrandId(String brandId) {
-        return entityManager.createQuery("select b from Bike b where b.brand.id = :id", Bike.class)
+        return entityManager.createQuery(
+                "select b from Bike b JOIN FETCH b.brand where b.brand.id = :id", Bike.class)
                 .setParameter("id", brandId)
                 .getResultList();
     }

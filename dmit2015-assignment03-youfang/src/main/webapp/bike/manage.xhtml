@@ -41,13 +41,19 @@
                         </p:commandButton>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:inputText id="searchText" value="#{searchText}"
-                                     placeholder="Enter brand..."
-                                     style="width:200px; margin-right: .5rem;"/>
+                        <p:selectOneMenu
+                                id="searchBrand"
+                                value="#{searchBrand}"
+                                converter="omnifaces.SelectItemsConverter"
+                                style="width:200px; margin-right: .5rem;">
+                            <f:selectItem itemLabel="--- All brands ---" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{currentBrandCrudView.getBrands()}"
+                                           var="b" itemValue="#{b}" itemLabel="#{b.name}"/>
+                        </p:selectOneMenu>
                         <p:commandButton id="searchButton"
                                          value="Search"
                                          icon="pi pi-search-plus"
-                                         actionListener="#{currentBikeCrudView.onSearch(searchText)}"
+                                         actionListener="#{currentBikeCrudView.onSearch(searchBrand)}"
                                          update=":dialogs:manage-Bike-content"
                                          styleClass="ui-button-info"
                                          style="margin-right: .5rem">
@@ -65,15 +71,15 @@
                              paginator="true" rows="10"
                              paginatorPosition="bottom">
 
-                    <f:facet name="header">
-                        <div class="Bikes-table-header">
-                            <span style="font-weight: bold">Bikes</span>
-                            <span class="filter-container ui-input-icon-left">
-                                <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtBikes').filter()" placeholder="Search"/>
-                            </span>
-                        </div>
-                    </f:facet>
+<!--                    <f:facet name="header">-->
+<!--                        <div class="Bikes-table-header">-->
+<!--                            <span style="font-weight: bold">Bikes</span>-->
+<!--                            <span class="filter-container ui-input-icon-left">-->
+<!--                                <i class="pi pi-search"></i>-->
+<!--                                <p:inputText id="globalFilter" onkeyup="PF('dtBikes').filter()" placeholder="Search"/>-->
+<!--                            </span>-->
+<!--                        </div>-->
+<!--                    </f:facet>-->
 
                     <p:column headerText="Brand">
                         <h:outputText value="#{currentItem.brand.name}"/>

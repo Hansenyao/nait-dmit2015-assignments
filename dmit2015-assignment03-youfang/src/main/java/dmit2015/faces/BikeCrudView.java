@@ -163,11 +163,15 @@ public class BikeCrudView implements Serializable {
     }
 
     /**
-     * Event handler for Search by brand
+     * Event handler for Search by brand id
      */
-    public void onSearch(String search) {
+    public void onSearch(Brand searchBrand) {
         try {
-            bikes = bikeService.findByBrandId(search);
+            if (searchBrand == null) {
+                bikes = bikeService.getAllBikes();
+            } else {
+                bikes = bikeService.findByBrandId(searchBrand.getId());
+            }
             PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
