@@ -7,11 +7,17 @@ Write your assignment discussion here with the status of your assignment, time t
 
 ## Assignment Status
 
-- 2025-10-15: Core (Single-Entity) part is finished, 2 days had been spent on it.
+- 2025-10-15: Core (Single-Entity) part was finished, 2 days had been spent on it.
+
+- 2025-10-17: Relation Extension (Two Entities) part was finished, 1 day had been spent on it
 
 ## Assignment Introduction
 
-- Domain: Bike, the properties include Brand, Color, Size, Model, Manufacture City, and Manufacture Date.
+- Domain: 
+
+  - Child Entity: Bike, it's properties include Brand, Color, Size, Model, Manufacture City, and Manufacture Date.
+
+  - Parent Entity: Brand, has properties include Name.
 
 - Database: PostgreSQL
 
