@@ -1,7 +1,6 @@
 package dmit2015.service;
 
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -51,7 +50,7 @@ public class JakartaPersistenceBikeService implements BikeService {
     @Override
     public List<Bike> getAllBikes() {
         return entityManager.createQuery(
-                "SELECT b FROM Bike b JOIN FETCH b.manufacturer ORDER BY b.createTime ASC",
+                "SELECT b FROM Bike b JOIN FETCH b.brand ORDER BY b.createTime ASC",
                  Bike.class)
                 .getResultList();
     }
@@ -73,7 +72,6 @@ public class JakartaPersistenceBikeService implements BikeService {
             existingBike.setModel(bike.getModel());
             existingBike.setManufactureCity(bike.getManufactureCity());
             existingBike.setManufactureDate(bike.getManufactureDate());
-            existingBike.setManufacturer(bike.getManufacturer());
             bike = entityManager.merge(existingBike);
             entityManager.flush();  // Validate immediately
         }
@@ -95,17 +93,11 @@ public class JakartaPersistenceBikeService implements BikeService {
 
     @Override
     @Transactional
-    // Find bikes by brand
-    public List<Bike> findByBrand(String brand) {
-        // Return all bikes if brand is null or empty
-        brand = brand != null ? brand.trim() : "";
-        String jpql = """
-            SELECT b FROM Bike b JOIN FETCH b.manufacturer
-            WHERE (:brand IS NULL OR :brand = '' OR LOWER(b.brand) LIKE LOWER(CONCAT('%', :brand, '%')))
-            ORDER BY b.id
-            """;
-        return entityManager.createQuery(jpql, Bike.class)
-                .setParameter("brand", brand)
+    // Find bikes by brand Id
+    public List<Bike> findByBrandId(String brandId) {
+        return entityManager.createQuery(
+                "select b from Bike b JOIN FETCH b.brand where b.brand.id = :id", Bike.class)
+                .setParameter("id", brandId)
                 .getResultList();
     }
 

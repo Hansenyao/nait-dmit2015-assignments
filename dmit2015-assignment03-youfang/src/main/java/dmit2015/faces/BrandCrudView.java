@@ -1,7 +1,7 @@
 package dmit2015.faces;
 
-import dmit2015.model.Manufacturer;
-import dmit2015.service.ManufacturerService;
+import dmit2015.model.Brand;
+import dmit2015.service.BrandService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -15,43 +15,42 @@ import org.primefaces.PrimeFaces;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * This Jakarta Faces backing bean class contains the data and event handlers
  * to perform CRUD operations using a PrimeFaces DataTable configured to perform CRUD.
  */
-@Named("currentManufacturerCrudView")
+@Named("currentBrandCrudView")
 @ViewScoped // create this object for one HTTP request and keep in memory if the next is for the same page
-public class ManufacturerCrudView implements Serializable {
+public class BrandCrudView implements Serializable {
 
     @Inject
-    @Named("jakartaPersistenceManufacturerService")
-    private ManufacturerService manufacturerService;
+    @Named("jakartaPersistenceBrandService")
+    private BrandService brandService;
 
     /**
-     * The selected Manufacturer instance to create, edit, update or delete.
+     * The selected Brand instance to create, edit, update or delete.
      */
     @Getter
     @Setter
-    private Manufacturer selectedManufacturer;
+    private Brand selectedBrand;
 
     /**
-     * The unique name of the selected Manufacturer instance.
+     * The unique name of the selected Brand instance.
      */
     @Getter
     @Setter
     private String selectedId;
 
     /**
-     * The list of Manufacturer objects fetched from the data source
+     * The list of Brand objects fetched from the data source
      */
     @Getter
-    private List<Manufacturer> manufacturers;
+    private List<Brand> brands;
 
     /**
-     * Fetch all Manufacturer from the data source.
+     * Fetch all Brand from the data source.
      * <p>
      * If FacesContext message sent from init() method annotated with @PostConstruct in the Faces backing bean class are not shown on page:
      * 1) Remove the @PostConstruct annotation from the Faces backing bean class
@@ -64,9 +63,9 @@ public class ManufacturerCrudView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            manufacturers = manufacturerService.getAllManufacturers();
+            brands = brandService.getAllBrands();
         } catch (Exception e) {
-            Messages.addGlobalError("Error getting manufacturers %s", e.getMessage());
+            Messages.addGlobalError("Error getting brands %s", e.getMessage());
         }
     }
 }

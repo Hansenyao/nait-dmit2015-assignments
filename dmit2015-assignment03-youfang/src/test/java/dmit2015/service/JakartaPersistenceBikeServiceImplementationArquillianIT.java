@@ -2,7 +2,7 @@ package dmit2015.service;
 
 import dmit2015.config.ApplicationConfig;
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
+import dmit2015.model.Brand;
 import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -67,7 +67,7 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
                 // .addAsLibraries(pomFile.resolve("org.eclipse:yasson:3.0.4").withTransitivity().asFile())
                 .addClass(ApplicationConfig.class)
                 .addClasses(Bike.class, BikeService.class, JakartaPersistenceBikeService.class)
-                .addClasses(Manufacturer.class, ManufacturerService.class, JakartaPersistenceManufacturerService.class)
+                .addClasses(Brand.class, BrandService.class, JakartaPersistenceBrandService.class)
                 // TODO Add any additional libraries, packages, classes or resource files required
 //                .addAsLibraries(pomFile.resolve("jakarta.platform:jakarta.jakartaee-api:10.0.0").withTransitivity().asFile())
                 // .addPackage("dmit2015.entity")
@@ -81,8 +81,8 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     private JakartaPersistenceBikeService bikeService;
 
     @Inject
-    @Named("jakartaPersistenceManufacturerService")
-    private JakartaPersistenceManufacturerService manufacturerService;
+    @Named("jakartaPersistenceBrandService")
+    private JakartaPersistenceBrandService brandService;
 
     @Resource
     private UserTransaction beanManagedTransaction;
@@ -114,10 +114,10 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     void givenNewEntity_whenAddEntity_thenEntityIsAdded() {
         // Arrange
         Bike newBike = Bike.of(faker);
-        // Set manufacturer
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
-        int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
-        newBike.setManufacturer(allManufacturer.get(randomIndex));
+        // Set brand
+        List<Brand> allBrand = brandService.getAllBrands();
+        int randomIndex = faker.number().numberBetween(0, allBrand.size());
+        newBike.setBrand(allBrand.get(randomIndex));
 
         // Act
         bikeService.createBike(newBike);
@@ -132,10 +132,10 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     void givenExistingId_whenFindById_thenReturnEntity() {
         // Arrange
         Bike newBike = Bike.of(faker);
-        // Set manufacturer
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
-        int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
-        newBike.setManufacturer(allManufacturer.get(randomIndex));
+        // Set brand
+        List<Brand> allBrand = brandService.getAllBrands();
+        int randomIndex = faker.number().numberBetween(0, allBrand.size());
+        newBike.setBrand(allBrand.get(randomIndex));
 
         // Act
         newBike = bikeService.createBike(newBike);
@@ -157,15 +157,14 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     void givenExistingEntity_whenUpdatedEntity_thenEntityIsUpdated() {
         // Arrange
         Bike newBike = Bike.of(faker);
-        // Set manufacturer
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
-        int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
-        newBike.setManufacturer(allManufacturer.get(randomIndex));
+        // Set brand
+        List<Brand> allBrand = brandService.getAllBrands();
+        int randomIndex = faker.number().numberBetween(0, allBrand.size());
+        newBike.setBrand(allBrand.get(randomIndex));
 
         // Update
         Instant instant = faker.timeAndDate().past(100, TimeUnit.DAYS);
         newBike = bikeService.createBike(newBike);
-        newBike.setBrand(faker.options().option(Bike.BRANDS));
         newBike.setColor(faker.color().name());
         newBike.setModel(faker.bothify("Model-??##"));
         newBike.setSize(faker.number().numberBetween(20, 29) + " inch");
@@ -189,12 +188,12 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     @Order(4)
     @Test
     void givenExistingId_whenDeleteEntity_thenEntityIsDeleted() {
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
-        int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
+        List<Brand> allBrand = brandService.getAllBrands();
+        int randomIndex = faker.number().numberBetween(0, allBrand.size());
 
         // Arrange
         Bike newBike = Bike.of(faker);
-        newBike.setManufacturer(allManufacturer.get(randomIndex));
+        newBike.setBrand(allBrand.get(randomIndex));
         newBike = bikeService.createBike(newBike);
         // Act
         bikeService.deleteBikeById(newBike.getId());
@@ -209,7 +208,7 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     @CsvSource({"10"})
     void givenMultipleEntity_whenFindAll_thenReturnEntityList(int expectedRecordCount) {
         // Arrange: Set up the initial state
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
+        List<Brand> allBrand = brandService.getAllBrands();
 
         // Delete all existing data
         assertThat(bikeService).isNotNull();
@@ -219,8 +218,8 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
         Bike lastExpectedBike = null;
         for (int counter = 1; counter <= expectedRecordCount; counter++) {
             Bike currentBike = Bike.of(faker);
-            int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
-            currentBike.setManufacturer(allManufacturer.get(randomIndex));
+            int randomIndex = faker.number().numberBetween(0, allBrand.size());
+            currentBike.setBrand(allBrand.get(randomIndex));
 
             if (counter == 1) {
                 firstExpectedBike = currentBike;
@@ -255,11 +254,10 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
     @Order(6)
     @ParameterizedTest
     @CsvSource(value = {
-            "'', 'red', 'Model-xy21', '21inch', 'Edmonton', '2025-01-01', 'Brand is required'",
-            "Giant, 'black', 'Model-ab26', '26inch', 'Vancouver', '2027-01-01', 'Manufacture Date must be in the past'",
+            "'red', 'Model-xy21', '21inch', '', '2025-01-01', 'Manufacture City is required'",
+            "'black', 'Model-ab26', '26inch', 'Vancouver', '2027-01-01', 'Manufacture Date must be in the past'",
     }, nullValues = {"null"})
     void givenEntityWithValidationErrors_whenAddEntity_thenThrowException(
-            String brand,
             String color,
             String model,
             String size,
@@ -267,17 +265,15 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
             String manufactureDate,
             String expectedExceptionMessage
     ) {
-        Instant instant = faker.timeAndDate().past(100, TimeUnit.DAYS);
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
-        int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
+        List<Brand> allBrand = brandService.getAllBrands();
+        int randomIndex = faker.number().numberBetween(0, allBrand.size());
 
         // Arrange
         Bike newBike = new Bike();
-        newBike.setBrand(brand);
+        newBike.setBrand(allBrand.get(randomIndex));
         newBike.setColor(color);
         newBike.setModel(model);
         newBike.setSize(size);
-        newBike.setManufacturer(allManufacturer.get(randomIndex));
         newBike.setManufactureCity(manufactureCity);
         newBike.setManufactureDate(LocalDate.parse(manufactureDate));
 
@@ -299,19 +295,21 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
             "Giant",
     }, nullValues = {"null"})
     void givenBrand_findEntityByBrand_thenReturnEntityList(
-            String brand
+            String brandName
     ) {
-        List<Manufacturer> allManufacturer = manufacturerService.getAllManufacturers();
-        int randomIndex = faker.number().numberBetween(0, allManufacturer.size());
+        List<Brand> allBrand = brandService.getAllBrands();
+        Brand brand = allBrand.stream()
+                .filter(b -> b.getName().equals(brandName))
+                .findFirst()
+                .orElse(null);
 
         // Create new bike with the given brand
         Bike newBike = Bike.of(faker);
         newBike.setBrand(brand);
-        newBike.setManufacturer(allManufacturer.get(randomIndex));
         bikeService.createBike(newBike);
 
         // Act
-        List<Bike> bikes = bikeService.findByBrand(brand);
+        List<Bike> bikes = bikeService.findByBrandId(brand.getId());
 
         // Assert
         assertThat(bikes.size()).isGreaterThanOrEqualTo(1);

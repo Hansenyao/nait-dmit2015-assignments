@@ -1,7 +1,7 @@
 package dmit2015.faces;
 
 import dmit2015.model.Bike;
-import dmit2015.model.Manufacturer;
+import dmit2015.model.Brand;
 import dmit2015.service.BikeService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -54,8 +54,9 @@ public class BikeCrudView implements Serializable {
     private List<Bike> bikes;
 
     @Inject
-    @Named("currentManufacturerCrudView")
-    private ManufacturerCrudView manufacturerCrudView;
+    @Named("currentBrandCrudView")
+    private BrandCrudView brandCrudView;
+
     /**
      * Fetch all Bike from the data source.
      * <p>
@@ -77,22 +78,13 @@ public class BikeCrudView implements Serializable {
     }
 
     /**
-     * Return Bike brands list
-     * */
-    public List<String> getBrands() {
-        return Arrays.asList(Bike.BRANDS);
-    }
-
-    /**
      * Event handler for the New button on the Faces crud page.
      * Create a new selected Bike instance to enter data for.
      */
     public void onOpenNew() {
         selectedBike = new Bike();
-        selectedBike.setManufactureCity("Edmonton");
         selectedId = null;
     }
-
 
     /**
      * Event handler to generate fake data using DataFaker.
@@ -103,10 +95,11 @@ public class BikeCrudView implements Serializable {
         try {
             var faker = new Faker();
             selectedBike = Bike.of(faker);
-            // Set a random manufacturer
-            List<Manufacturer> allManufacturers = manufacturerCrudView.getManufacturers();
-            Manufacturer randomManufacturer = allManufacturers.get(faker.random().nextInt(allManufacturers.size()));
-            selectedBike.setManufacturer(randomManufacturer);
+
+            // Set brand
+            List<Brand> allBrand = brandCrudView.getBrands();
+            Brand randomBrand = allBrand.get(faker.random().nextInt(allBrand.size()));
+            selectedBike.setBrand(randomBrand);
         } catch (Exception e) {
             Messages.addGlobalError("Error generating data {0}", e.getMessage());
         }
@@ -170,11 +163,15 @@ public class BikeCrudView implements Serializable {
     }
 
     /**
-     * Event handler for Search by brand
+     * Event handler for Search by brand id
      */
-    public void onSearch(String search) {
+    public void onSearch(Brand searchBrand) {
         try {
-            bikes = bikeService.findByBrand(search);
+            if (searchBrand == null) {
+                bikes = bikeService.getAllBikes();
+            } else {
+                bikes = bikeService.findByBrandId(searchBrand.getId());
+            }
             PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
