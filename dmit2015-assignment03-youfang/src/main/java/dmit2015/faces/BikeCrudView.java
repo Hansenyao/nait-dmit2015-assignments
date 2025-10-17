@@ -166,7 +166,7 @@ public class BikeCrudView implements Serializable {
      */
     public void onSearch(String search) {
         try {
-            bikes = bikeService.findByBrand(search);
+            bikes = bikeService.findByBrandId(search);
             PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());

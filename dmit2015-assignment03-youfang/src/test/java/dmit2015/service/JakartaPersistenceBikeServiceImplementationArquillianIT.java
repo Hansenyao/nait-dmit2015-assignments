@@ -308,7 +308,7 @@ public class JakartaPersistenceBikeServiceImplementationArquillianIT { // The cl
         bikeService.createBike(newBike);
 
         // Act
-        List<Bike> bikes = bikeService.findByBrand(brand);
+        List<Bike> bikes = bikeService.findByBrandId(brand);
 
         // Assert
         assertThat(bikes.size()).isGreaterThanOrEqualTo(1);
