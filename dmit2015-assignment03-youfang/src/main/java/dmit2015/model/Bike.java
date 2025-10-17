@@ -61,6 +61,11 @@ public class Bike implements Serializable {
     @Past(message = "Manufacture Date must be in the past.")
     private LocalDate manufactureDate;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "manufacturer_id", nullable = false)
+    @NotNull(message = "Manufacturer is required")
+    private Manufacturer manufacturer;
+
     @Version
     private Integer version = 1;
 
@@ -84,6 +89,7 @@ public class Bike implements Serializable {
         this.manufactureDate = other.manufactureDate;
         this.createTime = other.createTime;
         this.updateTime = other.updateTime;
+        this.manufacturer = other.manufacturer;
     }
 
     public static Bike copyOf(Bike other) {
