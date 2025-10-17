@@ -53,6 +53,9 @@ public class BikeCrudView implements Serializable {
     @Getter
     private List<Bike> bikes;
 
+    @Inject
+    @Named("currentManufacturerCrudView")
+    private ManufacturerCrudView manufacturerCrudView;
     /**
      * Fetch all Bike from the data source.
      * <p>
@@ -99,6 +102,14 @@ public class BikeCrudView implements Serializable {
         try {
             var faker = new Faker();
             selectedBike = Bike.of(faker);
+            // Set a random manufacturer
+            List<Manufacturer> allManufacturers = manufacturerCrudView.getManufacturers();
+            if (allManufacturers != null && !allManufacturers.isEmpty()) {
+                Manufacturer randomManufacturer = allManufacturers.get(faker.random().nextInt(allManufacturers.size()));
+                selectedBike.setManufacturer(randomManufacturer);
+            } else {
+                Messages.addGlobalWarn("No manufacturers available to assign.");
+            }
         } catch (Exception e) {
             Messages.addGlobalError("Error generating data {0}", e.getMessage());
         }
