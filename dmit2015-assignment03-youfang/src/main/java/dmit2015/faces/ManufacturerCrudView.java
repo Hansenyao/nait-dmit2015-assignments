@@ -1,8 +1,7 @@
 package dmit2015.faces;
 
-import dmit2015.model.Bike;
 import dmit2015.model.Manufacturer;
-import dmit2015.service.BikeService;
+import dmit2015.service.ManufacturerService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -14,47 +13,45 @@ import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This Jakarta Faces backing bean class contains the data and event handlers
  * to perform CRUD operations using a PrimeFaces DataTable configured to perform CRUD.
  */
-@Named("currentBikeCrudView")
+@Named("currentManufacturerCrudView")
 @ViewScoped // create this object for one HTTP request and keep in memory if the next is for the same page
-public class BikeCrudView implements Serializable {
+public class ManufacturerCrudView implements Serializable {
 
     @Inject
-    //@Named("memoryBikeService")
-    //@Named("firebaseHttpClientBikeService")
-    //@Named("firebaseMultiTenantHttpClientBikeService")
-    @Named("jakartaPersistenceBikeService")
-    private BikeService bikeService;
+    @Named("jakartaPersistenceManufacturerService")
+    private ManufacturerService manufacturerService;
 
     /**
-     * The selected Bike instance to create, edit, update or delete.
+     * The selected Manufacturer instance to create, edit, update or delete.
      */
     @Getter
     @Setter
-    private Bike selectedBike;
+    private Manufacturer selectedManufacturer;
 
     /**
-     * The unique name of the selected Bike instance.
+     * The unique name of the selected Manufacturer instance.
      */
     @Getter
     @Setter
     private String selectedId;
 
     /**
-     * The list of Bike objects fetched from the data source
+     * The list of Manufacturer objects fetched from the data source
      */
     @Getter
-    private List<Bike> bikes;
+    private List<Manufacturer> manufacturers;
 
     /**
-     * Fetch all Bike from the data source.
+     * Fetch all Manufacturer from the data source.
      * <p>
      * If FacesContext message sent from init() method annotated with @PostConstruct in the Faces backing bean class are not shown on page:
      * 1) Remove the @PostConstruct annotation from the Faces backing bean class
@@ -67,25 +64,18 @@ public class BikeCrudView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            bikes = bikeService.getAllBikes();
+            manufacturers = manufacturerService.getAllManufacturers();
         } catch (Exception e) {
-            Messages.addGlobalError("Error getting bikes %s", e.getMessage());
+            Messages.addGlobalError("Error getting manufacturers %s", e.getMessage());
         }
     }
 
     /**
-     * Return Bike brands list
-     * */
-    public List<String> getBrands() {
-        return Arrays.asList(Bike.BRANDS);
-    }
-
-    /**
      * Event handler for the New button on the Faces crud page.
-     * Create a new selected Bike instance to enter data for.
+     * Create a new selected Manufacturer instance to enter data for.
      */
     public void onOpenNew() {
-        selectedBike = new Bike();
+        selectedManufacturer = new Manufacturer();
         selectedId = null;
     }
 
@@ -98,7 +88,11 @@ public class BikeCrudView implements Serializable {
     public void onGenerateData() {
         try {
             var faker = new Faker();
-            selectedBike = Bike.of(faker);
+            int randomIndex = faker.number().numberBetween(0, Manufacturer.MANUFACTURERS.length);
+            selectedManufacturer = new Manufacturer();
+            selectedManufacturer.setName(Manufacturer.MANUFACTURERS[randomIndex][0]);
+            selectedManufacturer.setCountry(Manufacturer.MANUFACTURERS[randomIndex][1]);
+            selectedManufacturer.setId(selectedId);
         } catch (Exception e) {
             Messages.addGlobalError("Error generating data {0}", e.getMessage());
         }
@@ -112,32 +106,33 @@ public class BikeCrudView implements Serializable {
 
             // If selectedId is null then create new data otherwise update current data
             if (selectedId == null) {
-                Bike createdBike = bikeService.createBike(selectedBike);
+                Manufacturer createdManufacturer = manufacturerService.createManufacturer(selectedManufacturer);
 
                 // Send a Faces info message that create was successful
-                Messages.addGlobalInfo("Create was successful. {0}", createdBike.getId());
+                Messages.addGlobalInfo("Create was successful. {0}", createdManufacturer.getId());
                 // Reset the selected instance to null
-                selectedBike = null;
+                selectedManufacturer = null;
 
             } else {
-                bikeService.updateBike(selectedBike);
+                manufacturerService.updateManufacturer(selectedManufacturer);
 
                 Messages.addGlobalInfo("Update was successful");
 
             }
 
             // Fetch a list of objects from the data source
-            bikes = bikeService.getAllBikes();
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
+            manufacturers = manufacturerService.getAllManufacturers();
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Manufacturers");
 
             // Hide the PrimeFaces dialog
-            PrimeFaces.current().executeScript("PF('manageBikeDialog').hide()");
+            PrimeFaces.current().executeScript("PF('manageManufacturerDialog').hide()");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
         } catch (Exception ex) {    // handle system generated exceptions
             Messages.addGlobalError("Save not successful.");
             handleException(ex);
         }
+
     }
 
     /**
@@ -146,34 +141,20 @@ public class BikeCrudView implements Serializable {
     public void onDelete() {
         try {
             // Get the unique name of the Json object to delete
-            selectedId = selectedBike.getId();
-            bikeService.deleteBikeById(selectedId);
+            selectedId = selectedManufacturer.getId();
+            manufacturerService.deleteManufacturerById(selectedId);
             Messages.addGlobalInfo("Delete was successful for id of {0}", selectedId);
             // Fetch new data from the data source
-            bikes = bikeService.getAllBikes();
+            manufacturers = manufacturerService.getAllManufacturers();
 
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Manufacturers");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
         } catch (Exception ex) {    // handle system generated exceptions
             Messages.addGlobalError("Delete not successful.");
             handleException(ex);
         }
-    }
 
-    /**
-     * Event handler for Search by brand
-     */
-    public void onSearch(String search) {
-        try {
-            bikes = bikeService.findByBrand(search);
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-Bikes");
-        } catch (RuntimeException ex) { // handle application generated exceptions
-            Messages.addGlobalError(ex.getMessage());
-        } catch (Exception ex) {    // handle system generated exceptions
-            Messages.addGlobalError("Search not successful.");
-            handleException(ex);
-        }
     }
 
     /**

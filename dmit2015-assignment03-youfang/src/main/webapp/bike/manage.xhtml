@@ -161,12 +161,21 @@
                                         value="#{currentBikeCrudView.selectedBike.color}">
                                 </p:inputText>
                             </div>
+<!--                            <div class="field">-->
+<!--                                <p:outputLabel for="@next">Manufacture City</p:outputLabel>-->
+<!--                                <p:inputText-->
+<!--                                        id="manufactureCity"-->
+<!--                                        value="#{currentBikeCrudView.selectedBike.manufactureCity}">-->
+<!--                                </p:inputText>-->
+<!--                            </div>-->
                             <div class="field">
-                                <p:outputLabel for="@next">Manufacture City</p:outputLabel>
-                                <p:inputText
-                                        id="manufactureCity"
-                                        value="#{currentBikeCrudView.selectedBike.manufactureCity}">
-                                </p:inputText>
+                                <p:outputLabel for="@next">Manufacturer</p:outputLabel>
+                                <p:selectOneMenu
+                                        id="manufacturer"
+                                        value="#{currentBikeCrudView.selectedBike.manufacturer}">
+                                    <f:selectItems value="#{currentManufacturerCrudView.manufacturers}"
+                                        var="m" itemValue="#{m}" itemLabel="#{m.name}"/>
+                                </p:selectOneMenu>
                             </div>
                             <div class="field">
                                 <p:outputLabel for="@next">Manufacture Date</p:outputLabel>

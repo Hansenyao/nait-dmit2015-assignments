@@ -42,9 +42,6 @@ public class Manufacturer implements Serializable {
     @NotBlank(message = "Manufacturer country is required.")
     private String Country;
 
-    @OneToMany(mappedBy = "manufacturer")
-    private List<Bike> bikes = new ArrayList<>();
-
     @Version
     private Integer version;
 
@@ -53,7 +50,7 @@ public class Manufacturer implements Serializable {
 
     private LocalDateTime updateTime;
 
-    // Bike brands
+    // Bike manufacturers
     public static final String[][] MANUFACTURERS = {
             {"Trek Bicycle Corporation", "US"},
             {"Giant Manufacturing Co., Ltd.", "TW"},
