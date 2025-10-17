@@ -50,7 +50,9 @@ public class JakartaPersistenceBikeService implements BikeService {
 
     @Override
     public List<Bike> getAllBikes() {
-        return entityManager.createQuery("SELECT b FROM Bike b JOIN FETCH b.manufacturer", Bike.class)
+        return entityManager.createQuery(
+                "SELECT b FROM Bike b JOIN FETCH b.manufacturer ORDER BY b.createTime ASC",
+                 Bike.class)
                 .getResultList();
     }
 

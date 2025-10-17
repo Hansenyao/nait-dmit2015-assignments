@@ -104,12 +104,8 @@ public class BikeCrudView implements Serializable {
             selectedBike = Bike.of(faker);
             // Set a random manufacturer
             List<Manufacturer> allManufacturers = manufacturerCrudView.getManufacturers();
-            if (allManufacturers != null && !allManufacturers.isEmpty()) {
-                Manufacturer randomManufacturer = allManufacturers.get(faker.random().nextInt(allManufacturers.size()));
-                selectedBike.setManufacturer(randomManufacturer);
-            } else {
-                Messages.addGlobalWarn("No manufacturers available to assign.");
-            }
+            Manufacturer randomManufacturer = allManufacturers.get(faker.random().nextInt(allManufacturers.size()));
+            selectedBike.setManufacturer(randomManufacturer);
         } catch (Exception e) {
             Messages.addGlobalError("Error generating data {0}", e.getMessage());
         }
