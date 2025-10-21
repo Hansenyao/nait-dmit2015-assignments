@@ -1,0 +1,82 @@
+package dmit2015.faces;
+
+import dmit2015.model.FirebaseAuthSignInResponsePayload;
+import dmit2015.service.FirebaseAuthService;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.Setter;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.omnifaces.cdi.Param;
+import org.omnifaces.util.Messages;
+
+import java.io.Serializable;
+
+/**
+ * This Jakarta Faces backing bean is for sign in to Firebase Auth
+ * using a username and password then storing the response payload
+ * in session scope using a injected FirebaseAuthSignInSession instance.
+ * <p>
+ * This class uses Microprofile Config to read from
+ * `src/main/resources/META-INF/microprofile-config.properties`
+ * a key named `firebase.web.api.key` that contains the Firebase project Web API Key.
+ */
+@Named
+@ViewScoped
+public class FirebaseAuthSignUp implements Serializable {
+
+    @Inject
+    private FirebaseAuthService signUpService;
+
+    @NotBlank(message = "Username value is required.")
+    @Getter
+    @Setter
+    private String username;
+
+    @NotBlank(message = "Password value is required.")
+    @Pattern(
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{12,}$",
+        message = "Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, and one digit."
+    )
+    @Getter
+    @Setter
+    private String password;
+
+    @Inject
+    private FirebaseAuthSignInSession firebaseAuthSignInSession;
+
+    @Inject
+    @ConfigProperty(name = "firebase.web.api.key")
+    private String firebaserestapiKey;
+
+    @Param
+    private String requestURI;
+
+    public String submit() {
+        // https://firebase.google.com/docs/reference/rest/auth#section-sign-up-email-password
+        JsonObject credentials = Json.createObjectBuilder()
+                .add("email", username)
+                .add("password", password)
+                .add("returnSecureToken", true)
+                .build();
+        try {
+            FirebaseAuthSignInResponsePayload loginFirebaseAuthSignInResponsePayload = signUpService.signUp(firebaserestapiKey, credentials);
+            firebaseAuthSignInSession.setFirebaseAuthSignInResponsePayload(loginFirebaseAuthSignInResponsePayload);
+            firebaseAuthSignInSession.setUsername(username);
+
+            if (requestURI != null && !requestURI.isBlank()) {
+                return requestURI + "?faces-redirect=true";
+            } else {
+                return "/index?faces-redirect=true";
+            }
+        } catch (Exception e) {
+            Messages.addGlobalError(e.getMessage().replace("java.lang.RuntimeException: ", ""));
+        }
+        return null;
+    }
+}
