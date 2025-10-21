@@ -10,7 +10,7 @@ import java.util.List;
 @Repository(dataStore = "oracle-jpa-co-pu")
 public interface ProductRepository {
     @Find
-    Product findProductById(short id);
+    Product findProductById(long id);
 
     @Query("SELECT p FROM Product p WHERE p.productName LIKE :namePattern")
     List<Product> findProductsByName(String namePattern);

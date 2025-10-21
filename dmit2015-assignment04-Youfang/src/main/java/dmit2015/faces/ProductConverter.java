@@ -23,7 +23,7 @@ public class ProductConverter implements Converter<Product> {
     public Product getAsObject(FacesContext facesContext, UIComponent unComponent, String value) {
         if (value != null && !value.isBlank()) {
             try {
-                short productId = Short.parseShort(value);
+                long productId = Long.parseLong(value);
                 return productRepository.findProductById(productId);
             } catch (NumberFormatException e) {
                 throw  new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
