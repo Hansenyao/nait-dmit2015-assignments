@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import jakarta.inject.Provider;
 import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.util.Messages;
 
 /**
@@ -29,18 +31,22 @@ public class InventoryQueryView implements Serializable {
     private static final Logger LOG = Logger.getLogger(InventoryQueryView.class.getName());
 
     @Inject
-    private ProductRepository productRepository;
+    //private ProductRepository productRepository;
+    private transient Provider<ProductRepository> productRepositoryProvider;
 
     @Inject
-    private InventoryRepository inventoryRepository;
+    //private InventoryRepository inventoryRepository;
+    private transient Provider<InventoryRepository> inventoryRepository;
 
     @Getter
+    @Setter
     private Product selectedProduct;
 
     @Getter
     private List<Inventory> queryResults;
 
     public List<Product> completeProduct(String query) {
+        ProductRepository productRepository = productRepositoryProvider.get();
         return productRepository.findProductsByName("%" + query + "%");
     }
 
@@ -50,6 +56,7 @@ public class InventoryQueryView implements Serializable {
 
     public void onSubmit() {
         try {
+            InventoryRepository inventoryRepository = this.inventoryRepository.get();
             queryResults = inventoryRepository.findInventoryByProductId(selectedProduct.getId());
             Messages.addGlobalInfo("Query returned {0} records", queryResults.size());
         } catch (Exception ex) {
