@@ -7,7 +7,7 @@ import jakarta.data.repository.Repository;
 import java.util.List;
 
 @Repository(dataStore = "oracle-jpa-co-pu")
-public interface ICustomerOrdersRepository {
-    @Query("TODO: Write a JDQL query to return a list of Product matching the namePattern")
+public interface ProductRepository {
+    @Query("SELECT p FROM Product p WHERE p.productName LIKE :namePattern")
     List<Product> findProductsByName(String namePattern);
 }
