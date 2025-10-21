@@ -1,0 +1,72 @@
+// Firebase Realtime Database stores JSON data in a JSON Tree structure
+
+### Push new JSON data to the path
+POST https://dmit2015-test-default-rtdb.firebaseio.com//Bike.json
+Content-Type: application/json
+
+{
+  "brand": "Giant",
+  "color": "black",
+  "model": "Model-AB47",
+  "size": "24 inch",
+  "manufactureCity": "Kunshan",
+  "manufactureDate": "2024-12-09"
+}
+
+### Push new JSON data to the path
+POST https://dmit2015-test-default-rtdb.firebaseio.com//Bike.json
+Content-Type: application/json
+
+{
+  "brand": "Trek",
+  "color": "white",
+  "model": "Model-XL32",
+  "size": "26 inch",
+  "manufactureCity": "Edmonton",
+  "manufactureDate": "2024-10-19"
+}
+
+### Push new JSON data to the path
+POST https://dmit2015-test-default-rtdb.firebaseio.com//Bike.json
+Content-Type: application/json
+
+{
+  "brand": "Giant",
+  "color": "grey",
+  "model": "Model-AT21",
+  "size": "21 inch",
+  "manufactureCity": "Kunshan",
+  "manufactureDate": "2025-02-09"
+}
+
+### Read JSON data by path
+GET https://dmit2015-test-default-rtdb.firebaseio.com//Bike.json
+
+### Read JSON data by path and primary key value
+@primaryKeyValue = -OaMU0P2DO4mfQn2AHSU
+GET https://dmit2015-test-default-rtdb.firebaseio.com//Bike/{{primaryKeyValue}}.json
+
+### Write JSON data - will replace all properties with the properties in the request body - if you miss a property it will be removed
+PUT https://dmit2015-test-default-rtdb.firebaseio.com//Bike/{{primaryKeyValue}}.json
+Content-Type: application/json
+
+{
+  "brand": "Giant",
+  "color": "black",
+  "model": "Model-AB47",
+  "size": "24 inch",
+  "manufactureCity": "Tianjin",
+  "manufactureDate": "2024-12-24"
+}
+
+### Remove JSON data - use this if you want to delete data
+@deletePrimaryKeyValue = -OaMUj_FABlIVs1mljkD
+DELETE https://dmit2015-test-default-rtdb.firebaseio.com//Bike/{{deletePrimaryKeyValue}}.json
+
+### Update data - use this if you want to update some of the properties but not all of them
+PATCH https://dmit2015-test-default-rtdb.firebaseio.com//Bike/{{primaryKeyValue}}.json
+Content-Type: application/json
+
+{
+  "color": "red"
+}
