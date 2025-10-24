@@ -1,0 +1,107 @@
+<!-- This is a JSF composition page that extends the layout template -->
+<ui:composition
+        template="/WEB-INF/faces-templates/layout.xhtml"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:h="jakarta.faces.html"
+        xmlns:f="jakarta.faces.core"
+        xmlns:p="primefaces"
+        xmlns:o="http://omnifaces.org/ui">
+
+    <!-- Page metadata for title, description, and keywords -->
+    <ui:param name="title" value="Assignment04 - Product Inventory Search"/>
+
+    <!-- === Main Content Section === -->
+    <!-- Defines the primary content area rendered in the layout's <ui:insert name="maincontent"> -->
+    <ui:define name="maincontent">
+        <div class="card">
+            <h1 role="heading" aria-level="1">Product Inventory Search</h1>
+            <h:form id="inventory_form" role="form">
+                <p:panel id="formPanel" header="Form Panel" role="region" aria-label="Form Input Panel">
+                    <div class="ui-fluid">
+                        <div class="formgroup-inline">
+                            <div class="field grid">
+                                <p:outputLabel for="@next" styleClass="col-fixed" >Product Name</p:outputLabel>
+                                <div class="col">
+                                    <p:autoComplete id="selectedProduct"
+                                                    value="#{inventoryQueryView.selectedProduct}"
+                                                    completeMethod="#{inventoryQueryView.completeProduct}"
+                                                    var="product" itemLabel="#{product.productName}" itemValue="#{product}"
+                                                    converter="#{productConverter}"
+                                                    forceSelection="true"
+                                                    scrollHeight="250"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons for form submission and clearing -->
+                        <div class="formgroup-inline">
+                            <div class="field">
+                                <p:commandButton value="Submit"
+                                                 action="#{inventoryQueryView.onSubmit}"
+                                                 update="@form :messages :growl @form dataTable"
+                                                 oncomplete="initLeafletMaps()"/>
+                            </div>
+                            <div class="field">
+                                <p:commandButton value="Clear"
+                                                 action="#{inventoryQueryView.onClear}"
+                                                 update="@form :outputPanel"
+                                                 process="@this"
+                                                 styleClass="ui-button-secondary"/>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+
+                <!-- === Data Table for Displaying Records === -->
+                <div class="card">
+                    <p:dataTable id="dataTable"
+                                 value="#{inventoryQueryView.queryResults}"
+                                 var="it"
+                                 reflow="true"
+                                 rowKey="#{it.id}"
+                                 paginator="true" rows="10"
+                                 role="grid" aria-label="Data Table">
+
+                        <p:column headerText="Store Name">
+                            <h:outputText value="#{it.store.storeName}" />
+                        </p:column>
+
+                        <p:column headerText="Store Address">
+                            <h:outputText value="#{it.store.physicalAddress}" />
+                        </p:column>
+
+                        <p:column headerText="QtyInStore">
+                            <h:outputText value="#{it.productInventory}" />
+                        </p:column>
+
+                        <p:column headerText="Location">
+                            <div class="map"
+                                 data-lat="#{it.store.latitude}"
+                                 data-lng="#{it.store.longitude}"
+                                 style="height:260px;">
+                            </div>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+                    </p:confirmDialog>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <!-- Optional: Override footer content -->
+    <!--        <ui:define name="footer">-->
+    <!--            &lt;!&ndash; Use default footer from layout or define custom footer &ndash;&gt;-->
+    <!--        </ui:define>-->
+
+    <!-- Optional: Define scripts at the end of <h:body> -->
+    <!--        <ui:define name="bodyscripts">-->
+    <!--            &lt;!&ndash; Add page-specific body scripts here &ndash;&gt;-->
+    <!--            &lt;!&ndash; Example: <o:deferredScript name="js/weather.js" /> &ndash;&gt;-->
+    <!--        </ui:define>-->
+</ui:composition>
