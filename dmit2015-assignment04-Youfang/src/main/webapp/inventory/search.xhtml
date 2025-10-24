@@ -15,9 +15,6 @@
     <ui:define name="maincontent">
         <div class="card">
             <h1 role="heading" aria-level="1">Product Inventory Search</h1>
-
-<!--            <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:400px"/>-->
-
             <h:form id="inventory_form" role="form">
                 <p:panel id="formPanel" header="Form Panel" role="region" aria-label="Form Input Panel">
                     <div class="ui-fluid">
@@ -42,7 +39,8 @@
                             <div class="field">
                                 <p:commandButton value="Submit"
                                                  action="#{inventoryQueryView.onSubmit}"
-                                                 update="@form :messages :growl @form dataTable"/>
+                                                 update="@form :messages :growl @form dataTable"
+                                                 oncomplete="initLeafletMaps()"/>
                             </div>
                             <div class="field">
                                 <p:commandButton value="Clear"
@@ -76,10 +74,13 @@
                         <p:column headerText="QtyInStore">
                             <h:outputText value="#{it.productInventory}" />
                         </p:column>
+
                         <p:column headerText="Location">
-                            <p:gmap center="#{it.store.latitude}, #{it.store.longitude}" zoom="15" type="ROADMAP" style="width:280px;height:280px">
-                                <gmp-advanced-marker position="#{it.store.latitude}, #{it.store.longitude}" title="#{it.store.storeName}"/>
-                            </p:gmap>
+                            <div class="map"
+                                 data-lat="#{it.store.latitude}"
+                                 data-lng="#{it.store.longitude}"
+                                 style="height:260px;">
+                            </div>
                         </p:column>
 
                     </p:dataTable>
@@ -103,5 +104,4 @@
     <!--            &lt;!&ndash; Add page-specific body scripts here &ndash;&gt;-->
     <!--            &lt;!&ndash; Example: <o:deferredScript name="js/weather.js" /> &ndash;&gt;-->
     <!--        </ui:define>-->
-
 </ui:composition>

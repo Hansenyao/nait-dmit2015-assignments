@@ -25,10 +25,18 @@
     </ui:insert>
 
     <!-- Define additional scripts in child templates -->
-    <ui:insert name="headscripts"/>
+    <ui:insert name="headscripts">
+        <h:outputScript name="js/map.js" target="body"/>
+    </ui:insert>
     <o:importFunctions type="org.omnifaces.util.Faces"/>
 
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCvCDkYieuUBmMWon_mfLAfjuaeuosuqow&amp;sensor=true"></script>
+    <!-- For Leaflet map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""/>
 </h:head>
 
 <h:body style="padding: 2rem; min-height: 100dvh;">
